@@ -1,0 +1,26 @@
+[
+  {
+    "title": "product1",
+    "description": "product description",
+    "price": 100,
+    "thumbnail": "http1",
+    "stock": 10,
+    "id": 1
+  },
+  {
+    "title": "UpdatedProduct",
+    "description": "product description",
+    "price": 999,
+    "thumbnail": "http",
+    "stock": 10,
+    "id": 2
+  },
+  {
+    "title": "product3",
+    "description": "product description",
+    "price": 150,
+    "thumbnail": "http3",
+    "stock": 10,
+    "id": 3
+  }
+]
