@@ -2,7 +2,7 @@ const fs = require('fs');
 
 class ProductManager {
   constructor(archivo) {
-    this.path = `./${archivo}`;
+    this.path = `${__dirname}/${archivo}`;
     this.products = [];
   }
 
@@ -33,7 +33,7 @@ class ProductManager {
       );
       return object;
     } catch (err) {
-      console.error(err);
+      throw new Error(err);
     }
   }
 
@@ -43,7 +43,10 @@ class ProductManager {
       : null;
   }
 
-  getAll() {
+  getAll(limit) {
+    if (limit && limit > 0 && this.products.length > limit) {
+      return this.products.slice(0, limit);
+    }
     return this.products;
   }
 
@@ -73,7 +76,7 @@ class ProductManager {
       }
       return product;
     } catch (error) {
-      console.error(error.message);
+      throw new Error(err);
     }
   }
 
@@ -85,7 +88,7 @@ class ProductManager {
         JSON.stringify(this.products, null, 2)
       );
     } catch (err) {
-      console.error(err);
+      throw new Error(err);
     }
   }
 
@@ -97,55 +100,9 @@ class ProductManager {
         JSON.stringify(this.products, null, 2)
       );
     } catch (err) {
-      console.error(err);
+      throw new Error(err);
     }
   }
 }
 
-const pruebas = async (
-  archivo,
-  object,
-  getId,
-  deleteId,
-  updateId,
-  updatedObject,
-  borrar = false
-) => {
-  const productsInstance = new ProductManager(archivo);
-
-  await productsInstance.getFile();
-
-  console.log(await productsInstance.save(object));
-
-  console.log(productsInstance.getById(getId));
-
-  console.log(await productsInstance.updateProduct(updateId, updatedObject));
-
-  console.log(productsInstance.getAll());
-
-  await productsInstance.deleteById(deleteId);
-
-  if (borrar) {
-    setTimeout(() => {
-      productsInstance.deleteAll();
-    }, 2000);
-  }
-};
-
-const product = {
-  title: `newProduct`,
-  description: `product description`,
-  price: 99,
-  thumbnail: `http`,
-  stock: 10,
-};
-
-const updatedProduct = {
-  title: `UpdatedProduct`,
-  description: `product description`,
-  price: 999,
-  thumbnail: `http`,
-  stock: 10,
-};
-
-pruebas('./productos.json', product, 4, 4, 2, updatedProduct, false);
+module.exports = ProductManager;
