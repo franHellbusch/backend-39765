@@ -2,7 +2,7 @@ const productsService = require('../service/products/productsService');
 
 const get = async (req, res, next) => {
   try {
-    const products = productsService.getAll(req.params.limit);
+    const products = productsService.getAll(req.query.limit);
     res.status(200).json({
       success: true,
       data: products,

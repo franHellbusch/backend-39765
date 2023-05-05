@@ -7,7 +7,7 @@ const {
 } = require('../controllers/products.controllers');
 const router = require('express').Router();
 
-router.get('/:limit?', get);
+router.get('/', get);
 
 router.get('/:pid', getById);
 
