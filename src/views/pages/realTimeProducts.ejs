@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real time products</title>
+    <!-- TailWind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex flex-col flex-wrap content-center">
+    <!-- Product form -->
+    <h1 class="self-center my-4 text-gray-600 text-4xl font-extrabold">
+      Product form
+    </h1>
+    <%- include('../components/realTimeForm.ejs') %>
+
+    <!-- products table -->
+    <table class="self-center w-3/4 text-md bg-white shadow-md rounded mb-4">
+      <tbody id="realTimeProductsTable">
+        <tr class="border-b">
+          <th class="text-left p-3 px-5">Title</th>
+          <th class="text-left p-3 px-5">Description</th>
+          <th class="text-left p-3 px-5">Price</th>
+          <th class="text-left p-3 px-5">Stock</th>
+          <th class="text-left p-3 px-5">Code</th>
+          <th class="text-left p-3 px-5">Status</th>
+          <th class="text-left p-3 px-5">Category</th>
+          <th></th>
+        </tr>
+        <% products.forEach(p => { %> <%-
+        include('../components/realTimeProd.ejs', { product: p }) %> <% }); %>
+      </tbody>
+    </table>
+
+    <!-- socketio script -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- JS -->
+    <script src="/static/realTimeProducts.js"></script>
+  </body>
+</html>

@@ -2,25 +2,31 @@
   {
     "title": "product1",
     "description": "product description",
-    "price": 100,
-    "thumbnail": "http1",
+    "price": 300,
     "stock": 10,
+    "code": "codigo1",
+    "status": true,
+    "category": "product category",
     "id": 1
   },
   {
     "title": "UpdatedProduct",
     "description": "product description",
     "price": 999,
-    "thumbnail": "http",
     "stock": 10,
+    "code": "codigo2",
+    "status": true,
+    "category": "product category",
     "id": 2
   },
   {
     "title": "product3",
     "description": "product description",
     "price": 150,
-    "thumbnail": "http3",
     "stock": 10,
+    "code": "codigo3",
+    "status": true,
+    "category": "product category",
     "id": 3
   }
 ]

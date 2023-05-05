@@ -1,0 +1,31 @@
+{
+  "name": "desafios-backend",
+  "version": "1.0.0",
+  "description": "Repositorio con todos los desafios de mi cursada de Back-End en CoderHouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "start:dev": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/franHellbusch/desafios-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/franHellbusch/desafios-backend/issues"
+  },
+  "homepage": "https://github.com/franHellbusch/desafios-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  }
+}
