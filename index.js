@@ -1,12 +1,17 @@
-const http = require('./src/app');
-const CustomSocket = require('./src/config/CustomSocket');
+const http = require("./src/app");
+const CustomSocket = require("./src/config/CustomSocket");
+const { MongoConnect } = require("./src/config/mongoConfig");
 
-const PORT = process.env.PORT || 8080;
+MongoConnect()
+    .then(() => {
+        console.info("MongoDB connection established");
 
-const server = http.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+        const PORT = process.env.PORT || 8080;
 
-server.on('error', (err) => console.error(err));
+        http.listen(PORT, () => {
+            console.log(`Servidor corriendo en el puerto ${PORT}`);
+        }).on("error", (err) => console.error(err));
 
-new CustomSocket(http);
+        new CustomSocket(http);
+    })
+    .catch((err) => console.error(err));

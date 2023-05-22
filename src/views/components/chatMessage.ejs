@@ -1,0 +1,18 @@
+<div id="<%= message._id %>" class="flex w-full mt-2 space-x-3 max-w-xs">
+    <img
+        class="flex-shrink-0 h-10 w-10 rounded-full"
+        src="https://leadvictor.com/Contents/Images/user-avatar.png"
+        alt=""
+    />
+    <div>
+        <span class="text-xs text-gray-500 leading-none"
+            ><%= message.email %>
+        </span>
+        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+            <p class="text-sm"><%= message.message %></p>
+        </div>
+        <span class="text-xs text-gray-500 leading-none"
+            ><%= message.createdAt %>
+        </span>
+    </div>
+</div>
