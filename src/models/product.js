@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const productSchema = new Schema(
     {
@@ -8,7 +9,7 @@ const productSchema = new Schema(
         },
         description: {
             type: String,
-            require: true,
+            required: true,
         },
         price: {
             type: Number,
@@ -16,11 +17,11 @@ const productSchema = new Schema(
         },
         stock: {
             type: Number,
-            require: true,
+            required: true,
         },
         code: {
             type: String,
-            require: true,
+            required: true,
         },
         status: {
             type: String,
@@ -29,7 +30,7 @@ const productSchema = new Schema(
         },
         category: {
             type: String,
-            require: true,
+            required: true,
         },
     },
     {
@@ -37,6 +38,8 @@ const productSchema = new Schema(
         versionKey: false,
     }
 );
+
+productSchema.plugin(mongoosePaginate);
 
 const productModel = model("product", productSchema);
 

@@ -18,7 +18,7 @@ class MongoCartManager extends MongoManager {
         const cartById = await this.getById(id);
 
         const newProduct = cartById.products.find(
-            ({ product }) => product == prod_id
+            ({ product }) => product._id == prod_id
         );
 
         if (newProduct) {
@@ -27,21 +27,39 @@ class MongoCartManager extends MongoManager {
             cartById.products.push({ product: product._id, quantity: 1 });
         }
 
-        cartById.save();
+        return cartById.save();
+    }
 
-        return cartById;
+    async updateProductQuantity(id, prod_id, quantity) {
+        await productsService.getById(prod_id);
+        const cartById = await this.getById(id);
+
+        cartById.products = await cartById.products.map((p) => {
+            console.log(p.product._id.toString(), prod_id);
+            if (p.product._id.toString() == prod_id) {
+                p.quantity = parseInt(quantity);
+            }
+            return p;
+        });
+
+        return cartById.save();
     }
 
     async deleteProduct(id, prod_id) {
         const cartById = await this.getById(id);
 
         cartById.products = await cartById.products.filter(
-            (product) => product._id != prod_id
+            ({ product }) => product._id != prod_id
         );
 
-        cartById.save();
+        return cartById.save();
+    }
 
-        return cartById;
+    async deleteAll(id) {
+        const cartById = await this.getById(id);
+        cartById.products = [];
+
+        return cartById.save();
     }
 }
 

@@ -4,20 +4,20 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Home</title>
+        <title>Cart</title>
         <!-- TailWind -->
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body
         class="flex h-screen flex-col flex-wrap content-center justify-center"
     >
-        <!-- Products Table -->
+        <!-- Cart products Table -->
         <div class="flex content-center justify-between">
-            <h1 class="mb-4 text-4xl">Products</h1>
+            <h1 class="mb-4 text-4xl">Carts products</h1>
             <a
                 class="h-fit text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                href="/carts/<%= cart %>"
-                >Go to cart</a
+                href="/home"
+                >Go Home</a
             >
         </div>
         <table
@@ -27,6 +27,7 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
             >
                 <tr>
+                    <th scope="col" class="px-6 py-3">Quantity</th>
                     <th scope="col" class="px-6 py-3">Title</th>
                     <th scope="col" class="px-6 py-3">Description</th>
                     <th scope="col" class="px-6 py-3">Price</th>
@@ -34,32 +35,13 @@
                     <th scope="col" class="px-6 py-3">Code</th>
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Category</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody id="productsTableBody">
-                <% data.payload.forEach(p => { %> <%-
-                include('../components/productCard.ejs', { product: p, cart:
-                cart }) %> <% }); %>
+                <% cart.products.forEach((p)=> { %> <%-
+                include('../components/cartProduct.ejs', { product: p.product,
+                quantity: p.quantity }) %> <% }); %>
             </tbody>
         </table>
-        <div class="flex justify-center">
-            <% if (data.prevPage){ %>
-            <a
-                class="h-fit text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                href="<%= data.prevLink %>"
-                >prev</a
-            >
-            <% } %> <% if (data.totalPages > 1) {%>
-            <p><%= data.page %></p>
-            <% } %> <% if (data.nextPage){ %>
-            <a
-                class="h-fit text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                href="<%= data.nextLink %>"
-                >next</a
-            >
-            <% } %>
-        </div>
-        <script src="/static/home.js"></script>
     </body>
 </html>

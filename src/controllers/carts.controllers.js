@@ -39,6 +39,25 @@ const postNewProduct = async (req, res, next) => {
     }
 };
 
+const updateQuantity = async (req, res, next) => {
+    try {
+        const { cid, pid } = req.params;
+        const { quantity } = req.body;
+
+        const cart = await cartsService.updateProductQuantity(
+            cid,
+            pid,
+            quantity
+        );
+        res.status(200).json({
+            success: true,
+            cart,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 const deleteProductById = async (req, res, next) => {
     try {
         const message = await cartsService.deleteProduct(
@@ -54,4 +73,23 @@ const deleteProductById = async (req, res, next) => {
     }
 };
 
-module.exports = { getById, post, postNewProduct, deleteProductById };
+const deleteAll = async (req, res, next) => {
+    try {
+        const cart = await cartsService.deleteAll(req.params.cid);
+        res.status(200).json({
+            success: true,
+            cart,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = {
+    getById,
+    post,
+    postNewProduct,
+    deleteProductById,
+    updateQuantity,
+    deleteAll,
+};
