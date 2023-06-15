@@ -1,20 +1,14 @@
-import { Router } from "express";
 import { MongoUserRepository } from "../user/infrastructure/repositories/mongoUserRepository.js";
-import { AuthController } from "./controllers/AuthController.js";
-import { SessionAuthService } from "./services/sessionAuthService.js";
-
-const router = Router();
+import { AuthRouter } from "./routes/authRouter.js";
+import { PassportAuthService } from "./services/passportAuthService.js";
+import { PassportStrategyInstance } from "./services/passportStrategyInstance.js";
 
 // auth service dependency inyection
 const userRepository = new MongoUserRepository();
-const authService = new SessionAuthService(userRepository);
-const authController = new AuthController(authService);
+const authService = new PassportAuthService();
+const authRouter = new AuthRouter("api-auth", authService);
 
-// auth routes
-router.post("/login", authController.login); // login
+// eslint-disable-next-line no-new
+new PassportStrategyInstance(userRepository); // instanciando las estrategias de passport
 
-router.post("/register", authController.register); // register
-
-router.post("/logout", authController.logout); // logout
-
-export default router;
+export default authRouter;

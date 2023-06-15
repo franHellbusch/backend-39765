@@ -17,6 +17,12 @@ const config = {
     resave: false,
     store: MongoStore.create({ mongoUrl: getMongoUrl() }),
   },
+  views: {
+    viewEngine: "handlebars",
+    viewsDir: "src/public/views",
+    staticDir: "src/public/js",
+    staticPath: "/static",
+  },
   admin: {
     email: process.env.ADMIN_EMAIL || "adminCoder@coder.com",
     password: process.env.ADMIN_PASSWORD || "adminCod3r123",
