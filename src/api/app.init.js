@@ -10,6 +10,7 @@ import session from "express-session";
 import config from "./shared/config/config.js";
 import passport from "passport";
 import handlebars from "express-handlebars";
+import cookieParser from "cookie-parser";
 
 const appInit = () => {
   const app = new App();
@@ -19,7 +20,7 @@ const appInit = () => {
     express.json(),
     express.urlencoded({ extended: true }),
     passport.initialize(),
-    passport.session(),
+    cookieParser(),
   ]);
   app.setViewEngine(
     handlebars.engine(),

@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import config from "../../shared/config/config.js";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
+import { cookieExtractor } from "../../shared/utils/index.js";
 
 export class PassportStrategyInstance {
   constructor(userRepository) {
@@ -14,6 +16,7 @@ export class PassportStrategyInstance {
       "login",
       new LocalStrategy({ usernameField: "email" }, this.loginLocalStrategy)
     );
+
     passport.use(
       "register",
       new LocalStrategy(
@@ -25,15 +28,16 @@ export class PassportStrategyInstance {
       )
     );
 
-    // serialize and deserialize
-    passport.serializeUser((user, done) => {
-      done(null, user.email);
-    });
-
-    passport.deserializeUser(async (email, done) => {
-      const userData = await this.userRepository.getByParams({ email });
-      done(null, userData);
-    });
+    passport.use(
+      "jwt",
+      new JWTStrategy(
+        {
+          jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+          secretOrKey: config.jwt.secret,
+        },
+        this.jwtStategy
+      )
+    );
   };
 
   loginLocalStrategy = async (email, password, done) => {
@@ -89,6 +93,14 @@ export class PassportStrategyInstance {
 
       const user = await this.userRepository.save(req.body);
       done(null, user);
+    } catch (err) {
+      done(err, false);
+    }
+  };
+
+  jwtStategy = async (payload, done) => {
+    try {
+      done(null, payload);
     } catch (err) {
       done(err, false);
     }

@@ -1,27 +1,41 @@
 import BaseRouter from "../../shared/routes/baseRouter.js";
+import { generateToken } from "../../shared/utils/gererateToken.js";
 
 export class AuthRouter extends BaseRouter {
   initRoutes() {
     this.post(
       "/login",
-      this.service.authCallback("login"),
-      async (_req, res, _next) => {
-        res.redirect("/home");
+      ["NO_AUTH"],
+      this.service.authCallback("login", { strategyType: "locals" }),
+      async (req, res, _next) => {
+        const token = generateToken(req.user);
+        res
+          .cookie("authToken", token, {
+            maxAge: 1000 * 3600 * 24,
+            httpOnly: true,
+          })
+          .redirect("/home");
       }
     );
 
     this.post(
       "/register",
-      this.service.authCallback("register"),
-      async (_req, res, _next) => {
-        res.redirect("/home");
+      ["NO_AUTH"],
+      this.service.authCallback("register", { strategyType: "locals" }),
+      async (req, res, _next) => {
+        const token = generateToken(req.user);
+        res
+          .cookie("authToken", token, {
+            maxAge: 1000 * 3600 * 24,
+            httpOnly: true,
+          })
+          .redirect("/home");
       }
     );
 
-    this.post("/logout", async (req, res, _next) => {
-      req.logout(() => {
-        res.redirect("/login");
-      });
+    this.post("/logout", ["USER", "ADMIN"], async (req, res, _next) => {
+      res.clearCookie("authToken");
+      res.redirect("/login");
     });
   }
 }

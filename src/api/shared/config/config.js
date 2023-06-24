@@ -27,6 +27,9 @@ const config = {
     email: process.env.ADMIN_EMAIL || "adminCoder@coder.com",
     password: process.env.ADMIN_PASSWORD || "adminCod3r123",
   },
+  jwt: {
+    secret: process.env.SECRET || "jwtSecret",
+  },
 };
 
 export default config;

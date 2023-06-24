@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { PassportAuthService } from "../../auth/services/passportAuthService.js";
+const { authCallback } = new PassportAuthService();
 
 export default class BaseRouter {
   constructor(serviceName, service = {}) {
@@ -14,34 +16,42 @@ export default class BaseRouter {
 
   initRoutes() {}
 
-  get(path, ...callback) {
+  get(path, policies, ...callback) {
     this.router.get(
       path,
       this.generateCustomResponses,
+      authCallback("jwt", { strategyType: "jwt" }),
+      this.handlePolicies(policies),
       this.apllyCallbacks(callback)
     );
   }
 
-  post(path, ...callback) {
+  post(path, policies, ...callback) {
     this.router.post(
       path,
       this.generateCustomResponses,
+      authCallback("jwt", { strategyType: "jwt" }),
+      this.handlePolicies(policies),
       this.apllyCallbacks(callback)
     );
   }
 
-  put(path, ...callback) {
+  put(path, policies, ...callback) {
     this.router.put(
       path,
       this.generateCustomResponses,
+      authCallback("jwt", { strategyType: "jwt" }),
+      this.handlePolicies(policies),
       this.apllyCallbacks(callback)
     );
   }
 
-  delete(path, ...callback) {
+  delete(path, policies, ...callback) {
     this.router.delete(
       path,
       this.generateCustomResponses,
+      authCallback("jwt", { strategyType: "jwt" }),
+      this.handlePolicies(policies),
       this.apllyCallbacks(callback)
     );
   }
@@ -59,6 +69,22 @@ export default class BaseRouter {
       });
     next();
   }
+
+  handlePolicies = (policies = []) => {
+    return (req, res, next) => {
+      if (policies[0] === "PUBLIC") return next();
+
+      const user = req.user;
+      if (policies[0] === "NO_AUTH" && user)
+        return next({ message: "Unauthorized", status: 401 });
+      if (policies[0] === "NO_AUTH" && !user) return next();
+
+      if (!user) return next({ message: req.error, status: 401 });
+      if (!policies.includes(user.role.toUpperCase()))
+        return next({ message: "Forbidden", status: 403 });
+      next();
+    };
+  };
 
   apllyCallbacks(callbacks) {
     return callbacks.map((callback) => async (...params) => {

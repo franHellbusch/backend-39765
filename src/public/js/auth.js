@@ -27,3 +27,21 @@ authForm.addEventListener("submit", async function (event) {
   const resJson = (await response.json()) || response;
   console.log(resJson);
 });
+
+// eslint-disable-next-line no-unused-vars
+async function logout() {
+  const response = await fetch("/api/v1/logout", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+
+  if (response.ok) {
+    window.location.href = `${response.url}`;
+  }
+
+  const resJson = (await response.json()) || response;
+  console.log(resJson);
+}

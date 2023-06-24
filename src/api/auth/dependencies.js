@@ -1,7 +1,7 @@
 import { MongoUserRepository } from "../user/infrastructure/repositories/mongoUserRepository.js";
 import { AuthRouter } from "./routes/authRouter.js";
 import { PassportAuthService } from "./services/passportAuthService.js";
-import { PassportStrategyInstance } from "./services/passportStrategyInstance.js";
+import { PassportStrategyInstance } from "./config/passportStrategyInstance.js";
 
 // auth service dependency inyection
 const userRepository = new MongoUserRepository();
