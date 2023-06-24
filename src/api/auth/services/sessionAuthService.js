@@ -6,7 +6,18 @@ export class SessionAuthService {
     this.userRepository = userRepository;
   }
 
-  login = async (req) => {
+  authCallback(strategy) {
+    switch (strategy) {
+      case "login":
+        return this.login;
+      case "register":
+        return this.register;
+      default:
+        throw new Error("missing strategy");
+    }
+  }
+
+  login = async (req, _res, next) => {
     const { email, password } = req.query;
     if (!email || !password) {
       throw new Error("Missing credentials");
@@ -17,7 +28,12 @@ export class SessionAuthService {
         throw new Error("Invalid credentials");
       }
       req.session.user = email;
-      return `Admin account login: ${email}`;
+      req.user = {
+        email,
+        role: "admin",
+      };
+      req.message = `Admin account login: ${email}`;
+      return next();
     }
 
     const user = await this.userRepository.getByParams({ email });
@@ -28,20 +44,20 @@ export class SessionAuthService {
     }
 
     req.session.user = user.email;
+    req.user = user;
 
-    return email;
+    next();
   };
 
-  register = async (req) => {
+  register = async (req, _res, next) => {
     if (req.body.email === config.admin.email) {
       throw new Error("User already exist");
     }
     const user = await this.userRepository.save(req.body);
     req.session.user = user.email;
-    return user.email;
-  };
 
-  logout = async (req) => {
-    req.session.destroy();
+    req.user = user;
+
+    next();
   };
 }

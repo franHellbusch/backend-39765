@@ -18,16 +18,25 @@ class App {
     this.server.close();
   }
 
-  setRoutes(routers = []) {
+  setRoutes(routers = [], clientRouter = () => {}) {
     routers.forEach((router) => {
       this.app.use(config.server.apiVersion, router);
     });
+
+    this.app.use("/", clientRouter);
   }
 
   setMiddlewares(middlewares = []) {
     middlewares.forEach((middleware) => {
       this.app.use(middleware);
     });
+  }
+
+  setViewEngine(engine, viewEngine, viewsDir, staticPath, staticDir) {
+    this.app.engine(viewEngine, engine);
+    this.app.set("view engine", viewEngine);
+    this.app.set("views", viewsDir);
+    this.app.use(staticPath, express.static(staticDir));
   }
 
   errorHandler(errorHandler) {
