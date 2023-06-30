@@ -11,6 +11,8 @@ import config from "./shared/config/config.js";
 import passport from "passport";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
+import productRouter from "./product/infrastructure/dependencies.js";
+import cartRouter from "./cart/infrastructure/dependencies.js";
 
 const appInit = () => {
   const app = new App();
@@ -30,7 +32,13 @@ const appInit = () => {
     config.views.staticDir
   );
   app.setRoutes(
-    [healthRouter.getRouter(), userRouter.getRouter(), authRouter.getRouter()],
+    [
+      healthRouter.getRouter(),
+      userRouter.getRouter(),
+      authRouter.getRouter(),
+      productRouter.getRouter(),
+      cartRouter.getRouter(),
+    ],
     clientRouter.getRouter()
   );
   app.errorHandler(errorHandler);

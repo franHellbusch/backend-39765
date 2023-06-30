@@ -33,6 +33,10 @@ export class AuthRouter extends BaseRouter {
       }
     );
 
+    this.get("/current", ["USER", "ADMIN"], async (req, res, _next) => {
+      res.sendSuccessWithPayload(200, req.user);
+    });
+
     this.post("/logout", ["USER", "ADMIN"], async (req, res, _next) => {
       res.clearCookie("authToken");
       res.redirect("/login");

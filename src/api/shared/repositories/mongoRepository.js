@@ -32,6 +32,13 @@ export class MongoRepository {
     return new this.model(object).save();
   };
 
+  update = async (id, object) => {
+    await this.getById(id);
+    await this.model.findByIdAndUpdate(id, object);
+
+    return id;
+  };
+
   deleteById = async (id) => {
     await this.getById(id);
     await this.model.findByIdAndDelete(id);

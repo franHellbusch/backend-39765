@@ -6,7 +6,7 @@ export class UserUC {
   }
 
   createUser = async (user) => {
-    const userInfo = await this.userRepository.save(user);
+    const userInfo = await this.userRepository.saveUser(user);
     return new User(userInfo);
   };
 

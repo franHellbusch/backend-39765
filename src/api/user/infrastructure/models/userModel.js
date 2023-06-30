@@ -20,6 +20,13 @@ export const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    age: {
+      type: Number,
+      required: true,
+    },
+    cart: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],

@@ -10,6 +10,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "eqeqeq": "off",
     "prettier/prettier": "error"
   },
   "ignorePatterns": [".eslintrc.js", "jest.config.js"]
