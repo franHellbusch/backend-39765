@@ -12,7 +12,10 @@ export class PassportStrategyInstance {
   }
 
   registerStrategies = () => {
-    passport.use("login", new LocalStrategy({ usernameField: "email" }, this.loginLocalStrategy));
+    passport.use(
+      "login",
+      new LocalStrategy({ usernameField: "email" }, this.loginLocalStrategy)
+    );
 
     passport.use(
       "register",
@@ -40,7 +43,10 @@ export class PassportStrategyInstance {
   loginLocalStrategy = async (email, password, done) => {
     try {
       if (!email.includes("@") || !email.includes(".")) {
-        return done({ message: "Invalid email, please enter a valid one", status: 401 }, false);
+        return done(
+          { message: "Invalid email, please enter a valid one", status: 401 },
+          false
+        );
       }
 
       if (email === config.admin.email) {
@@ -56,7 +62,8 @@ export class PassportStrategyInstance {
       const findUser = await this.userRepository.getByParams({ email });
 
       const isMatch = await bcrypt.compare(password, findUser.password);
-      if (!isMatch) return done({ message: "Invalid credentials", status: 401 }, false);
+      if (!isMatch)
+        return done({ message: "Invalid credentials", status: 401 }, false);
 
       done(null, findUser);
     } catch (err) {
@@ -87,6 +94,7 @@ export class PassportStrategyInstance {
       }
 
       const user = await this.userRepository.saveUser(req.body);
+
       done(null, user);
     } catch (err) {
       done(err, false);

@@ -7,5 +7,6 @@ export const PrivateRoutes = {
   PRIVATE: "private",
   HOME: "home",
   CART: "cart",
+  PROFILE: "profile",
   ADMIN: "admin",
 };

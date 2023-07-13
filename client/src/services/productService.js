@@ -2,17 +2,8 @@ import axios from "axios";
 
 const authApiUrl = "http://localhost:8080/api/v1";
 
-export const getProducts = async (options) => {
-  const parsedOptions = {
-    limit: options?.limit || "",
-    page: options?.page || "",
-    sort: options?.sort || "",
-    query: options?.query || "",
-  };
-
-  const queryParams = `?limit=${parsedOptions.limit}&page=${parsedOptions.page}&sort=${parsedOptions.sort}&query=${parsedOptions.query}`;
-
-  return await axios.get(`${authApiUrl}/products${queryParams}`);
+export const getProducts = async (pageUrl) => {
+  return await axios.get(pageUrl || `${authApiUrl}/products`);
 };
 
 export const getProductById = async (id) => {

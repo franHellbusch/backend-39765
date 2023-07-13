@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "@/services/productService";
 import { saveProducts } from "@/store/states/product";
-import { ProductCard } from "./components";
+import { AdminProductCard } from "./components";
 
-const ProductList = () => {
+const AdminProductList = () => {
   const dispatch = useDispatch();
   const productState = useSelector((store) => store.products);
-  const { cart: cartId } = useSelector((store) => store.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +36,7 @@ const ProductList = () => {
         </thead>
         <tbody>
           {productState.products.map((product) => {
-            return <ProductCard key={product.id} product={product} cartId={cartId} />;
+            return <AdminProductCard key={product.id} product={product} />;
           })}
         </tbody>
       </table>
@@ -52,4 +51,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default AdminProductList;

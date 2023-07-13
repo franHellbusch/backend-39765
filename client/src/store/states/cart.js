@@ -10,7 +10,10 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     saveCart: (state, action) => action.payload,
-    removeAllProductsInCart: (state) => initialState,
+    removeAllProductsInCart: (state) => {
+      state.products = [];
+      return state;
+    },
   },
 });
 

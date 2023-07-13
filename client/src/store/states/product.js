@@ -23,14 +23,18 @@ const productSlice = createSlice({
     },
     updateProduct: (state, action) => {
       const { product, prodId } = action.payload;
-      return state.map((p) => {
+      state.products = state.products.map((p) => {
         if (p.id == prodId) {
           p = { ...p, ...product };
         }
+        return p;
       });
+
+      return state;
     },
     removeProduct: (state, action) => {
-      return state.filter((product) => product.id != action.payload);
+      state.products = state.products.filter((product) => product.id != action.payload);
+      return state;
     },
     removeAllProduct: (state) => initialState,
   },

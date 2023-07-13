@@ -1,4 +1,4 @@
-import { Cart } from "../domain/cart.js";
+import { CartDto } from "./dtos/cartDto.js";
 
 export class CartUC {
   constructor(cartRepository) {
@@ -7,17 +7,17 @@ export class CartUC {
 
   sendCart = async (id) => {
     const cartInfo = await this.cartRepository.getById(id);
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 
   createCart = async () => {
     const cartInfo = await this.cartRepository.saveCart();
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 
   addProductToCart = async (cartId, productId) => {
     const cartInfo = await this.cartRepository.setNewProduct(cartId, productId);
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 
   updateProductQuantity = async (cartId, productId, quantity) => {
@@ -26,16 +26,16 @@ export class CartUC {
       productId,
       quantity
     );
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 
   deleteProduct = async (cartId, productId) => {
     const cartInfo = await this.cartRepository.deleteProduct(cartId, productId);
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 
   deleteAllProducts = async (cartId) => {
     const cartInfo = await this.cartRepository.deleteAll(cartId);
-    return new Cart(cartInfo);
+    return new CartDto(cartInfo);
   };
 }

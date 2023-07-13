@@ -27,6 +27,6 @@ export class AuthController {
 
   logout = async (_req, res, _next) => {
     res.clearCookie("authToken");
-    res.redirect("/login");
+    res.sendSuccess(200, "Success logout");
   };
 }

@@ -1,7 +1,7 @@
-import { login } from "../../services/userService";
+import { login } from "@/services/userService";
 import { useDispatch } from "react-redux";
-import { saveUser } from "../../store/states/user";
-import { PrivateRoutes } from "../../models";
+import { saveUser } from "@/store/states/user";
+import { PrivateRoutes, PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -26,9 +26,10 @@ const Login = () => {
         <label>Email</label>
         <input name='email' type='text' />
         <label>Password</label>
-        <input name='password' type='text' />
-        <button type='submit'>Login</button>
+        <input type='password' name='password' placeholder='••••••••' required />
+        <button type='submit'>Submit</button>
       </form>
+      <button onClick={() => navigate(`/${PublicRoutes.REGISTER}`)}>Go to register</button>
     </>
   );
 };
