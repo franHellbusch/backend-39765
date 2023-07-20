@@ -1,7 +1,7 @@
 import React from "react";
 import { AdminProductList, ProductForm } from "./components";
-import { Navigate, useNavigate } from "react-router-dom";
-import { PrivateRoutes } from "@/models";
+import { useNavigate } from "react-router-dom";
+import { PrivateRoutes, PublicRoutes } from "@/models";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -9,9 +9,6 @@ const AdminDashboard = () => {
   return (
     <>
       <h2>Admin</h2>
-      <button onClick={() => navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.HOME}`)}>
-        Go home
-      </button>
       <AdminProductList />
       <ProductForm />
     </>

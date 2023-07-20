@@ -1,7 +1,7 @@
 import { register } from "@/services/userService";
 import { useDispatch } from "react-redux";
 import { saveUser } from "@/store/states/user";
-import { PrivateRoutes, PublicRoutes } from "@/models";
+import { PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -16,7 +16,7 @@ const Register = () => {
 
     const response = await register(user);
     dispatch(saveUser(response.payload));
-    navigate(`/${PrivateRoutes.PRIVATE}`);
+    navigate(`/${PublicRoutes.HOME}`);
   };
 
   return (
@@ -25,24 +25,24 @@ const Register = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <label for='name'>Name</label>
+            <label>Name</label>
             <input type='text' name='name' placeholder='name' required />
           </div>
           <div>
-            <label for='lastName'>LastName</label>
+            <label>LastName</label>
             <input type='text' name='lastName' placeholder='lastName' required />
           </div>
         </div>
         <div>
-          <label for='age'>Age</label>
+          <label>Age</label>
           <input type='number' name='age' required />
         </div>
         <div>
-          <label for='email'>Email</label>
+          <label>Email</label>
           <input type='email' name='email' required />
         </div>
         <div>
-          <label for='password'>Password</label>
+          <label>Password</label>
           <input type='password' name='password' placeholder='••••••••' required />
         </div>
         <button type='submit'>Submit</button>

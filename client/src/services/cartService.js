@@ -2,10 +2,6 @@ import axios from "axios";
 
 const authApiUrl = "http://localhost:8080/api/v1";
 
-export const postCart = async () => {
-  return await axios.post(`${authApiUrl}/carts`);
-};
-
 export const getCartById = async (id) => {
   return await axios.get(`${authApiUrl}/carts/${id}`);
 };

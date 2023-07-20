@@ -6,6 +6,7 @@ export class Product {
     price = 0,
     stock = 0,
     code = "",
+    imageUrl = "",
     status = "",
     category = "",
   }) {
@@ -15,6 +16,7 @@ export class Product {
     this.price = price;
     this.stock = stock;
     this.code = code;
+    this.imageUrl = imageUrl;
     this.status = status;
     this.category = category;
   }

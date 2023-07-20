@@ -4,7 +4,10 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import authRouter from "./auth/dependencies.js";
-import cartRouter from "./cart/infrastructure/dependencies.js";
+import {
+  cartRouter,
+  ticketRouter,
+} from "./cart/infrastructure/dependencies.js";
 import healthRouter from "./health/infrastructure/dependencies.js";
 import productRouter from "./product/infrastructure/dependencies.js";
 import App from "./shared/app.js";
@@ -31,6 +34,7 @@ const appInit = () => {
     authRouter.getRouter(),
     productRouter.getRouter(),
     cartRouter.getRouter(),
+    ticketRouter.getRouter(),
   ]);
   app.errorHandler(errorHandler);
 

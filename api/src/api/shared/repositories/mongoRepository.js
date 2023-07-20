@@ -5,9 +5,9 @@ export class MongoRepository {
     this.model = model;
   }
 
-  getAll = async () => {
+  getAll = async (params = {}) => {
     try {
-      return await this.model.find();
+      return await this.model.find(params);
     } catch (err) {
       throw mongoErrorHandler(err);
     }

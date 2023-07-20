@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { deleteAllProductsInCart, getCartById } from "@/services/cartService";
 import { removeAllProductsInCart, saveCart } from "@/store/states/cart";
 import { useDispatch, useSelector } from "react-redux";
-import { PrivateRoutes } from "@/models";
+import { PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 import { CartProductCard } from "./components";
 
@@ -28,9 +28,6 @@ const Cart = () => {
   return (
     <>
       <h2>Cart</h2>
-      <button onClick={() => navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.HOME}`)}>
-        Home
-      </button>
       <p>{cartState.id}</p>
       <table style={{ border: "1px solid black" }}>
         <thead>

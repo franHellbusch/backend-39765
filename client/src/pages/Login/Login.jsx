@@ -1,7 +1,7 @@
-import { login } from "@/services/userService";
+import { githubAuth, googleAuth, login } from "@/services/userService";
 import { useDispatch } from "react-redux";
 import { saveUser } from "@/store/states/user";
-import { PrivateRoutes, PublicRoutes } from "@/models";
+import { PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -16,7 +16,19 @@ const Login = () => {
 
     const response = await login(user);
     dispatch(saveUser(response.payload));
-    navigate(`/${PrivateRoutes.PRIVATE}`);
+    navigate(`/${PublicRoutes.HOME}`);
+  };
+
+  const handleGoogleAuth = async () => {
+    const response = await googleAuth();
+    dispatch(saveUser(response.payload));
+    navigate(`/${PublicRoutes.HOME}`);
+  };
+
+  const handleGithubAuth = async () => {
+    const response = await githubAuth();
+    dispatch(saveUser(response.payload));
+    navigate(`/${PublicRoutes.HOME}`);
   };
 
   return (
@@ -30,6 +42,9 @@ const Login = () => {
         <button type='submit'>Submit</button>
       </form>
       <button onClick={() => navigate(`/${PublicRoutes.REGISTER}`)}>Go to register</button>
+      <br />
+      <button onClick={handleGoogleAuth}>Sign in with google</button>
+      <button onClick={handleGithubAuth}>Sign in with github</button>
     </>
   );
 };

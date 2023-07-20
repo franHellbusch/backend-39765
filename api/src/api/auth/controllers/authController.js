@@ -21,6 +21,14 @@ export class AuthController {
       .sendSuccessWithPayload(200, req.user);
   };
 
+  githubAuthCallback = (req, res, _next) => {
+    res.sendSuccessWithPayload(200, req.user);
+  };
+
+  googleAuthCallback = (req, res, _next) => {
+    res.sendSuccessWithPayload(200, req.user);
+  };
+
   currentUser = async (req, res, _next) => {
     res.sendSuccessWithPayload(200, req.user);
   };

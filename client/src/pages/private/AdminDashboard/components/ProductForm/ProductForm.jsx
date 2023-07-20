@@ -41,11 +41,8 @@ const ProductForm = () => {
           <input type='text' name='code' required />
         </div>
         <div>
-          <label>Status</label>
-          <select name='status'>
-            <option value='active'>Active</option>
-            <option value='none'>None</option>
-          </select>
+          <label>Image</label>
+          <input type='text' name='imageUrl' required />
         </div>
         <div>
           <label>Category</label>

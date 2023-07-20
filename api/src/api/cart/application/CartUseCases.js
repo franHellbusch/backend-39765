@@ -38,4 +38,9 @@ export class CartUC {
     const cartInfo = await this.cartRepository.deleteAll(cartId);
     return new CartDto(cartInfo);
   };
+
+  finishPurchase = async (cartId, email) => {
+    const message = await this.cartRepository.cartPurchase(cartId, email);
+    return message;
+  };
 }

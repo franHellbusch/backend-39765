@@ -28,6 +28,10 @@ export const productSchema = new Schema(
       enum: ["active", "none"],
       default: "active",
     },
+    imageUrl: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,
@@ -38,6 +42,15 @@ export const productSchema = new Schema(
     versionKey: false,
   }
 );
+
+productSchema.pre(/^find/, function (next) {
+  if (this.stock > 0) {
+    this.status = "active";
+  } else {
+    this.status = "none";
+  }
+  next();
+});
 
 productSchema.plugin(mongoosePaginate);
 

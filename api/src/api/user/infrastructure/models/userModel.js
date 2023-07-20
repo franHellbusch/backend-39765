@@ -10,19 +10,26 @@ export const UserSchema = new Schema(
     },
     password: {
       type: String,
+    },
+    displayName: {
+      type: String,
       required: true,
     },
     name: {
       type: String,
-      required: true,
+      default: null,
     },
     lastName: {
       type: String,
-      required: true,
+      default: null,
     },
     age: {
       type: Number,
-      required: true,
+      default: null,
+    },
+    picture: {
+      type: String,
+      default: null,
     },
     cart: {
       type: String,
