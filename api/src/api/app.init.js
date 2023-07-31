@@ -9,7 +9,10 @@ import {
   ticketRouter,
 } from "./cart/infrastructure/dependencies.js";
 import healthRouter from "./health/infrastructure/dependencies.js";
-import productRouter from "./product/infrastructure/dependencies.js";
+import {
+  mockProductRouter,
+  productRouter,
+} from "./product/infrastructure/dependencies.js";
 import App from "./shared/app.js";
 import config from "./shared/config/config.js";
 import { errorHandler } from "./shared/middlewares/errorHandler.js";
@@ -33,6 +36,7 @@ const appInit = () => {
     userRouter.getRouter(),
     authRouter.getRouter(),
     productRouter.getRouter(),
+    mockProductRouter.getRouter(),
     cartRouter.getRouter(),
     ticketRouter.getRouter(),
   ]);
