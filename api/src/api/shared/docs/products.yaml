@@ -1,0 +1,372 @@
+paths:
+  /api/v1/products:
+    post:
+      summary: Crea el producto (solo para Admins)
+      tags:
+        - Products
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/CreateProduct'
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Product'
+        "400":
+          description: Cuando falta uno de los paths requeridos
+          content:
+            application/json:
+              example:
+                success: false
+                message: Missing (price) paths
+                name: BAD_REQUEST
+                status: 400
+                meta:
+                    errors: [
+                      "price"
+                    ]
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "403":
+          description: Cuando el usuario no esta logeado como Admin
+          content:
+            application/json:
+              example:
+                success: false
+                message: Forbidden
+                name: FORBIDDEN
+                status: 403
+    get:
+      summary: Devuelve todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos se obtienen correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    type: object
+                    properties:
+                      products:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Product'
+                      page:
+                        type: integer
+                      hasPrevPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+                      totalPages:
+                        type: integer
+                      prevLink:
+                        type: string
+                      nextLink:
+                        type: string
+  /api/v1/products/{id}:
+    get:
+      summary: Obtiene el producto con el id proporcionado
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto encontrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Product'
+        "400":
+          description: id del producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+    put:
+      summary: Actualiza el producto del id proporcionado (solo para Admins)
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateProduct'
+      responses:
+        "200":
+          description: Producto modificado
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Product'
+        "400":
+          description: id del producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "403":
+          description: Cuando el usuario no esta logeado como Admin
+          content:
+            application/json:
+              example:
+                success: false
+                message: Forbidden
+                name: FORBIDDEN
+                status: 403
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+    delete:
+      summary: Elimina el producto del id proporcionado (solo para Admins)
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto modificado
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        description: Mensaje que da a entender que el producto se elimino
+                      id:
+                        type: string
+                        description: id del producto eliminado
+              example:
+                success: true
+                payload:
+                  message: Successfully deleted 64b86f92fda193489dc88597
+                  id: 64b86f92fda193489dc88597
+        "400":
+          description: id del producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "403":
+          description: Cuando el usuario no esta logeado como Admin
+          content:
+            application/json:
+              example:
+                success": false
+                message: Forbidden
+                name: FORBIDDEN
+                status: 403
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+        id: 
+          type: string
+          description: Id autogenerado por Mongo
+      example:
+        id: 64b86f8cfda193489dc8858f
+        title: Sneakers
+        description: This sneakers are only for gods
+        price: 200
+        stock: 124
+        code: fasdfsadf
+        imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        status: active
+        category: sneakers
+  requestBodies:
+    CreateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+    UpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+      
