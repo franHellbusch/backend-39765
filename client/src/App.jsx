@@ -9,6 +9,7 @@ import { Suspense, lazy } from "react";
 import { Navbar } from "./components";
 import { ThemeProvider } from "styled-components";
 import { lightTheme } from "./utils/theme";
+import { GlobalStyle } from "./styled-components/GlobalStyle";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -17,6 +18,7 @@ const Register = lazy(() => import("./pages/Register/Register"));
 function App() {
   return (
     <ThemeProvider theme={lightTheme}>
+      <GlobalStyle />
       <Suspense fallback={<>Loading...</>}>
         <Provider store={store}>
           <BrowserRouter>

@@ -1,11 +1,11 @@
+import { FlexContainer } from "@/styled-components";
 import { ProductList } from "./components";
 
 const Home = () => {
   return (
-    <>
-      <h2>Home</h2>
+    <FlexContainer $direction='column' $margin='3rem 10%'>
       <ProductList />
-    </>
+    </FlexContainer>
   );
 };
 

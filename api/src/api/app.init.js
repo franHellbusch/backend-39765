@@ -24,13 +24,13 @@ const appInit = () => {
   const app = new App();
 
   app.setMiddlewares([
+    cors(config.cors),
     session(config.session),
     express.json(),
     express.urlencoded({ extended: true }),
     passport.initialize(),
     cookieParser(),
     loggerMiddleware,
-    cors(config.cors),
   ]);
   app.app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
   app.setRoutes([

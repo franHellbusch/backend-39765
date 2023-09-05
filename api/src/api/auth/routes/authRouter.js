@@ -17,6 +17,8 @@ export class AuthRouter extends BaseRouter {
       this.controllers.register
     );
 
+    this.get("/restore", ["NO_AUTH"], this.controllers.restore);
+
     this.get(
       "/auth/github",
       ["NO_AUTH"],

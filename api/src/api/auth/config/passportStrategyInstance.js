@@ -39,6 +39,7 @@ export class PassportStrategyInstance {
           clientSecret: config.github.clientSecret,
           callbackURL: config.github.callbackUrl,
           scope: ["user:email"],
+          session: false,
         },
         this.githubStrategy
       )
@@ -52,6 +53,7 @@ export class PassportStrategyInstance {
           clientSecret: config.google.clientSecret,
           callbackURL: config.google.callbackUrl,
           scope: ["profile", "email"],
+          session: false,
         },
         this.googleStrategy
       )
