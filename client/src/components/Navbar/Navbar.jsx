@@ -1,16 +1,27 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "@/models";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "@/store/states/user";
 import { Roles } from "@/models/roles";
-import { NavBar, NavLink } from "./styles-components";
+import {
+  NavBar,
+  LinkSeparationBar,
+  CartIcon,
+  LogoutIcon,
+  UserIcon,
+  HomeIcon,
+} from "./styles-components";
 import { logout } from "@/services/userService";
+import { FlexContainer, StyledLink, Title } from "@/styled-components";
+import { useTheme } from "styled-components";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { role } = useSelector((store) => store.user);
+  const { role, email } = useSelector((store) => store.user);
+  const theme = useTheme();
+  const { pathname: location } = useLocation();
 
   const handleClick = async () => {
     await logout();
@@ -20,19 +31,91 @@ const Navbar = () => {
 
   return (
     <NavBar>
-      <NavLink onClick={() => navigate(`/${PublicRoutes.HOME}`)}>Home</NavLink>
-      <NavLink onClick={() => navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CART}`)}>
-        Cart
-      </NavLink>
-      <NavLink onClick={() => navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.PROFILE}`)}>
-        Profile
-      </NavLink>
-      {role == Roles.ADMIN && (
-        <NavLink onClick={() => navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`)}>
-          AdminDashboard
-        </NavLink>
-      )}
-      <NavLink onClick={handleClick}>Logout</NavLink>
+      <Title $fontsize='30px' $color={theme.colors.primary}>
+        SuperMarket
+      </Title>
+      <FlexContainer $align='center'>
+        <StyledLink
+          $display='flex'
+          $align='center'
+          $weight='500'
+          $underline={false}
+          $color={theme.text.grey}
+          to={`/${PublicRoutes.HOME}`}
+        >
+          <HomeIcon />
+          Home
+        </StyledLink>
+        {location != `/${PublicRoutes.LOGIN}` && location != `/${PublicRoutes.REGISTER}` && (
+          <>
+            <LinkSeparationBar />
+            {role == Roles.ADMIN && (
+              <>
+                <StyledLink
+                  $weight='500'
+                  $underline={false}
+                  $color={theme.text.grey}
+                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`}
+                >
+                  AdminDashboard
+                </StyledLink>
+                <LinkSeparationBar />
+              </>
+            )}
+            {email ? (
+              <>
+                <StyledLink
+                  $weight='500'
+                  $underline={false}
+                  $color={theme.text.grey}
+                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.PROFILE}`}
+                >
+                  Profile
+                </StyledLink>
+                <LinkSeparationBar />
+                <StyledLink
+                  $display='flex'
+                  $align='center'
+                  $weight='500'
+                  $underline={false}
+                  $color={theme.text.grey}
+                  onClick={handleClick}
+                >
+                  <LogoutIcon />
+                  Logout
+                </StyledLink>
+                <LinkSeparationBar />
+              </>
+            ) : (
+              <>
+                <StyledLink
+                  $display='flex'
+                  $align='center'
+                  $weight='500'
+                  $underline={false}
+                  $color={theme.text.grey}
+                  to={`/${PublicRoutes.LOGIN}`}
+                >
+                  <UserIcon />
+                  Sign In/Sign Up
+                </StyledLink>
+                <LinkSeparationBar />
+              </>
+            )}
+            <StyledLink
+              $display='flex'
+              $align='center'
+              $weight='500'
+              $underline={false}
+              $color={theme.text.grey}
+              to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CART}`}
+            >
+              <CartIcon />
+              Cart
+            </StyledLink>
+          </>
+        )}
+      </FlexContainer>
     </NavBar>
   );
 };

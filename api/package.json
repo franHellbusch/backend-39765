@@ -30,6 +30,8 @@
     "prettier": "^2.8.8"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@sendgrid/mail": "^7.7.0",
     "bcrypt": "^5.1.0",
     "connect-mongo": "^5.0.0",
     "cookie-parser": "^1.4.6",
@@ -50,6 +52,8 @@
     "passport-local": "^1.0.0",
     "pino": "^8.14.1",
     "pino-pretty": "^10.0.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0"
   }
 }

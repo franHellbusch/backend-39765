@@ -47,6 +47,12 @@ const config = {
     origin: "http://localhost:5173",
     credentials: true,
   },
+  sendgrid: {
+    apiKey:
+      process.env.SENDGRID_API_KEY ||
+      "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",
+    verifyUserEmail: "fhdeveloper18@gmail.com",
+  },
 };
 
 export default config;

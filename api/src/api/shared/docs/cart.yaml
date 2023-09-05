@@ -1,0 +1,535 @@
+paths:
+  /api/v1/carts:
+    post:
+      summary: Crea el carrito
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+              example:
+                success: true
+                payload:
+                  id: 64b86f8cfda193489dc8858f
+                  products: []
+                  total: 200
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+  /api/v1/carts/{id}:
+    get:
+      summary: Obtiene el carrito con el id proporcionado
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id para obtener el carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito encontrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+        "400":
+          description: id del Carrito en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+    delete:
+      summary: Eliminar todos los poductos del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id para obtener el Carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito vacio
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+              example:
+                success: true
+                payload:
+                  id: 64b86f8cfda193489dc8858f
+                  products: []
+                  total: 200
+        "400":
+          description: id del carrito en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+  /api/v1/carts/{cid}/products/{pid}:
+    post:
+      summary: Enviar un producto al carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id para obtener el carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito con el nuevo producto actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+        "400":
+          description: id del Carrito o Producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito o Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+    put:
+      summary: Actualizar la cantidad de un producto dentro del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id para obtener el carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+        - name: quantity
+          in: query
+          required: true
+          description: Nueva cantidad del producto en el carrito
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Carrito con la cantidad de un producto actualizado
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+        "400":
+          description: id del Carrito o Producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito o Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+    delete:
+      summary: Eliminar un producto del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id para obtener el carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado del carrito correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+              example:
+                success: true
+                payload:
+                  id: 64b86f8cfda193489dc8858f
+                  products: []
+                  total: 200
+        "400":
+          description: id del Carrito o Producto en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito o Producto no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+  /api/v1/carts/{cid}/purchase:
+    post:
+      summary: Enviar un producto al carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id para obtener el carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id para obtener el producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito con el nuevo producto actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    description: Mensaje que da a entender que el ticket esta creado
+              example:
+                success: true
+                message: The tiecket was created and is ready to be searched
+        "400":
+          description: id del Carrito en un formato incorrecto
+          content:
+            application/json:
+              example:
+                success: false
+                message: Wrong ID format entered
+                name: BAD_REQUEST
+                status: 400
+                service: api-products
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Not found
+                name: NOT_FOUND
+                status: 404
+                service: api-products
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+        id: 
+          type: string
+          description: Id autogenerado por Mongo
+      example:
+        id: 64b86f8cfda193489dc8858f
+        title: Sneakers
+        description: This sneakers are only for gods
+        price: 200
+        stock: 124
+        code: fasdfsadf
+        imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        status: active
+        category: sneakers
+    Cart:
+      type: object
+      properties:
+        id: 
+          type: string
+          description: Id autogenerado por Mongose
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                description: La cantidad del producto
+              product:
+                $ref: '#components/schemas/Product'
+              subtotal:
+                type: number
+                description: subtotal del producto por su cantidad
+        total:
+          type: number
+          description: Total de la compra
+      example:
+        id: 64b86f8cfda193489dc8858f
+        products: [
+          {
+            quantity: 1,
+            product: {
+              id: 64b86f8cfda193489dc8858f,
+              title: Sneakers,
+              description: This sneakers are only for gods,
+              price: 200,
+              stock: 124,
+              code: fasdfsadf,
+              imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600,
+              status: active,
+              category: sneakers
+            },
+            subtotal: 200
+          }
+        ]
+        total: 200
+  requestBodies:
+    CreateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+    UpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        imageUrl:
+          type: string
+          description: Url de la imagen subida en la nube
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+      

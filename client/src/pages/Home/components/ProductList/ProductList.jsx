@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "@/services/productService";
 import { saveProducts } from "@/store/states/product";
 import { ProductCard } from "./components";
+import { FlexContainer } from "@/styled-components";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -23,24 +24,10 @@ const ProductList = () => {
   };
 
   return (
-    <>
-      <table style={{ border: "1px solid black" }}>
-        <thead>
-          <tr>
-            <th style={{ border: "1px solid black", padding: "5px" }}>Title</th>
-            <th style={{ border: "1px solid black", padding: "5px" }}>Price</th>
-            <th style={{ border: "1px solid black", padding: "5px" }}>Description</th>
-            <th style={{ border: "1px solid black", padding: "5px" }}>Stock</th>
-            <th style={{ border: "1px solid black", padding: "5px" }}>Category</th>
-            <th style={{ border: "1px solid black", padding: "5px" }}></th>
-          </tr>
-        </thead>
-        <tbody>
-          {productState.products.map((product) => {
-            return <ProductCard key={product.id} product={product} cartId={cartId} />;
-          })}
-        </tbody>
-      </table>
+    <FlexContainer $justify='space-between' $wrap='wrap'>
+      {productState.products.map((product) => {
+        return <ProductCard key={product.id} product={product} cartId={cartId} />;
+      })}
       {productState.prevPage && (
         <button onClick={() => changePage(productState.prevLink)}>Prev</button>
       )}
@@ -48,7 +35,7 @@ const ProductList = () => {
       {productState.nextPage && (
         <button onClick={() => changePage(productState.nextLink)}>Next</button>
       )}
-    </>
+    </FlexContainer>
   );
 };
 
