@@ -1,15 +1,18 @@
-import { mongoErrorHandler } from "../helpers/mongoErrorHandler.js";
+import CustomErrorHandler from "../helpers/CustomErrorHanlder.js";
+import { ErrorNames } from "../helpers/errorNames.js";
+import { ThrowNewError } from "../helpers/ThrowNewError.js";
 
 export class MongoRepository {
-  constructor(model) {
+  constructor(model, errorHanlder = new CustomErrorHandler()) {
     this.model = model;
+    this.errorHanlder = errorHanlder;
   }
 
   getAll = async (params = {}) => {
     try {
       return await this.model.find(params);
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 
@@ -18,12 +21,12 @@ export class MongoRepository {
       const data = await this.model.findById(id);
 
       if (!data) {
-        throw new Error(`Not found`);
+        throw ThrowNewError(ErrorNames.NOT_FOUND, "Not found");
       }
 
       return data;
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 
@@ -32,12 +35,12 @@ export class MongoRepository {
       const data = await this.model.findOne(params);
 
       if (!data) {
-        throw new Error(`Not found`);
+        throw ThrowNewError(ErrorNames.NOT_FOUND, "Not found");
       }
 
       return data;
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 
@@ -47,7 +50,7 @@ export class MongoRepository {
       const data = new this.model(object);
       return await data.save();
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 
@@ -60,7 +63,7 @@ export class MongoRepository {
 
       return data;
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 
@@ -71,7 +74,7 @@ export class MongoRepository {
 
       return id;
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 }

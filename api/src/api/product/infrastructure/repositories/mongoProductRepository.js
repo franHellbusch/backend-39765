@@ -1,11 +1,11 @@
 import config from "../../../shared/config/config.js";
-import { mongoErrorHandler } from "../../../shared/helpers/mongoErrorHandler.js";
 import { MongoRepository } from "../../../shared/repositories/mongoRepository.js";
+import productCustomErrorHandler from "../helpers/ProductCustomErrorHandler.js";
 import { productModel } from "../models/productModel.js";
 
 export class MongoProductRepository extends MongoRepository {
   constructor() {
-    super(productModel);
+    super(productModel, productCustomErrorHandler);
   }
 
   async getAllPaginate({ limit = 10, page = 1, sort = 0, query }) {
@@ -52,7 +52,7 @@ export class MongoProductRepository extends MongoRepository {
             }&query=${query || ""}`,
       };
     } catch (err) {
-      mongoErrorHandler(err);
+      this.errorHanlder.handleError(err);
     }
   }
 }

@@ -13,13 +13,10 @@ export const passportCall = (strategy, options = {}) => {
       if (!user) {
         switch (options.strategyType) {
           case "jwt":
-            req.error = info.message ? info.message : info.toString();
+            req.error = info;
             return next();
           case "locals":
-            return next({
-              message: info.message || info.toString(),
-              status: 401,
-            });
+            return next({ ...info });
         }
       }
 

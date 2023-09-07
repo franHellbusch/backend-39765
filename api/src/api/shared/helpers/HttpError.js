@@ -17,7 +17,7 @@ export class HttpError extends Error {
     if (err instanceof HttpError) return err;
 
     const status = sts || err.status || 500;
-    const name = httpStatus[`${status}_NAME`];
+    const name = err.name || httpStatus[`${status}_NAME`];
     const message = err.message || httpStatus[status];
     const meta = metaData || null;
 
