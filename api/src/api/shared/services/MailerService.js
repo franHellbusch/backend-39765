@@ -1,25 +1,20 @@
 import sgMail from "@sendgrid/mail";
 import config from "../config/config.js";
 
-class MailerService {
+export class MailerService {
   constructor() {
     sgMail.setApiKey(config.sendgrid.apiKey);
   }
 
-  async sendEmail({ to, subject, text, html = null }) {
+  async sendEmail({ to, subject, template, templateData }) {
     const msg = {
-      from: `Ecommerce api <${config.sendgrid.verifyUserEmail}>`,
+      from: `SuperMarket <${config.sendgrid.verifyUserEmail}>`,
       to,
       subject,
-      text,
+      templateId: template,
+      dynamic_template_data: templateData,
     };
-
-    if (html) {
-      msg.html = html;
-    }
 
     return await sgMail.send(msg);
   }
 }
-
-export const mailerService = new MailerService();

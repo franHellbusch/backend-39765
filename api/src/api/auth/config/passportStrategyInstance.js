@@ -6,6 +6,7 @@ import { OAuth2Strategy as GoogleStrategy } from "passport-google-oauth";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 import config from "../../shared/config/config.js";
+import { ErrorNames } from "../../shared/helpers/errorNames.js";
 import { cookieExtractor } from "../../shared/utils/index.js";
 
 export class PassportStrategyInstance {
@@ -75,14 +76,25 @@ export class PassportStrategyInstance {
     try {
       if (!email.includes("@") || !email.includes(".")) {
         return done(
-          { message: "Invalid email, please enter a valid one", status: 401 },
+          {
+            message: "Invalid email, please enter a valid one",
+            name: ErrorNames.users.INVALID_EMAIL,
+            status: 400,
+          },
           false
         );
       }
 
       if (email === config.admin.email) {
         if (password !== config.admin.password) {
-          return done({ message: "Invalid credentials", status: 401 }, false);
+          return done(
+            {
+              message: "Invalid credentials",
+              name: ErrorNames.users.INVALID_CREDENTIALS,
+              status: 401,
+            },
+            false
+          );
         }
         return done(null, {
           email,
@@ -94,7 +106,14 @@ export class PassportStrategyInstance {
 
       const isMatch = await bcrypt.compare(password, findUser.password);
       if (!isMatch)
-        return done({ message: "Invalid credentials", status: 401 }, false);
+        return done(
+          {
+            message: "Invalid credentials",
+            name: ErrorNames.users.INVALID_CREDENTIALS,
+            status: 401,
+          },
+          false
+        );
 
       done(null, findUser);
     } catch (err) {
@@ -108,7 +127,8 @@ export class PassportStrategyInstance {
         return done(
           {
             message: "Invalid email, please enter a valid one",
-            status: 401,
+            name: ErrorNames.users.INVALID_EMAIL,
+            status: 400,
           },
           false
         );
@@ -116,7 +136,14 @@ export class PassportStrategyInstance {
 
       if (email === config.admin.email) {
         if (password !== config.admin.password) {
-          return done({ message: "Invalid credentials", status: 401 }, false);
+          return done(
+            {
+              message: "Invalid credentials",
+              name: ErrorNames.users.INVALID_CREDENTIALS,
+              status: 401,
+            },
+            false
+          );
         }
         return done(null, {
           email,

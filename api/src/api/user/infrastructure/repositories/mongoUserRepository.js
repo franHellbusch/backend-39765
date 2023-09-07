@@ -1,10 +1,10 @@
-import { mongoErrorHandler } from "../../../shared/helpers/mongoErrorHandler.js";
 import { MongoRepository } from "../../../shared/repositories/mongoRepository.js";
+import userCustomErrorHandler from "../helpers/UserCustomErrorHandler.js";
 import { userModel } from "../models/userModel.js";
 
 export class MongoUserRepository extends MongoRepository {
   constructor(cartRepository) {
-    super(userModel);
+    super(userModel, userCustomErrorHandler);
     this.cartRepository = cartRepository;
   }
 
@@ -15,7 +15,7 @@ export class MongoUserRepository extends MongoRepository {
       user.cart = cart._id;
       return await user.save();
     } catch (err) {
-      throw mongoErrorHandler(err);
+      throw this.errorHanlder.handleError(err);
     }
   };
 }

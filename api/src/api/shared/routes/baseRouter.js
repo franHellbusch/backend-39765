@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { passportCall } from "../../auth/services/passportAuthService.js";
+import { ErrorNames } from "../helpers/errorNames.js";
 
 export default class BaseRouter {
   constructor(serviceName, constrollers = {}) {
@@ -66,6 +67,11 @@ export default class BaseRouter {
         success: true,
         payload,
       });
+    res.sendError = (status, message) =>
+      res.status(status).json({
+        success: false,
+        message,
+      });
     next();
   }
 
@@ -75,12 +81,12 @@ export default class BaseRouter {
 
       const user = req.user;
       if (policies[0] === "NO_AUTH" && user)
-        return next({ message: "Unauthorized", status: 401 });
+        return next({ name: ErrorNames.UNAUTHORIZED, status: 401 });
       if (policies[0] === "NO_AUTH" && !user) return next();
 
-      if (!user) return next({ message: req.error, status: 401 });
+      if (!user) return next({ ...req.error });
       if (!policies.includes(user.role.toUpperCase()))
-        return next({ message: "Forbidden", status: 403 });
+        return next({ name: ErrorNames.FORBIDDEN, status: 403 });
       next();
     };
   };

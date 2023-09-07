@@ -27,7 +27,7 @@ export const ticketSchema = new Schema(
           required: true,
         },
         product: {
-          type: mongoose.Schema.Types.ObjectId,
+          type: mongoose.Types.ObjectId,
           ref: "product",
         },
         subtotal: {

@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
 import { Schema, model } from "mongoose";
+import { createHash } from "../../../shared/utils/index.js";
 
 export const UserSchema = new Schema(
   {
@@ -48,7 +48,7 @@ export const UserSchema = new Schema(
 
 UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 12);
+    this.password = await createHash(this.password);
   }
   next();
 });

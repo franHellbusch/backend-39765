@@ -1,10 +1,12 @@
-import { HttpError } from "../../../shared/helpers/HttpError.js";
+import { ErrorNames } from "../../../shared/helpers/errorNames.js";
+import { ThrowNewError } from "../../../shared/helpers/ThrowNewError.js";
 import { MongoRepository } from "../../../shared/repositories/mongoRepository.js";
+import cartCustomErrorHandler from "../helpers/CartCustomErrorHandler.js";
 import { cartModel } from "../models/cartModel.js";
 
 export class MongoCartRepository extends MongoRepository {
   constructor(productRepository, ticketRepository) {
-    super(cartModel);
+    super(cartModel, cartCustomErrorHandler);
     this.productRepository = productRepository;
     this.ticketRepository = ticketRepository;
   }
@@ -35,7 +37,10 @@ export class MongoCartRepository extends MongoRepository {
   updateProductQuantity = async (id, prodId, quantity) => {
     // eslint-disable-next-line valid-typeof
     if (!quantity || typeof quantity == String) {
-      throw new Error("Missing product quantity");
+      throw ThrowNewError(
+        ErrorNames.carts.MISSING_QUANTITY,
+        "Missing product quantity"
+      );
     }
 
     await this.productRepository.getById(prodId);
@@ -74,17 +79,18 @@ export class MongoCartRepository extends MongoRepository {
     const productsWithoutStock = [];
     cartById.products.forEach((item) => {
       if (item.product.stock < item.quantity) {
-        productsWithoutStock.push(item.product._id);
+        productsWithoutStock.push({
+          id: item.product._id,
+          title: item.product.title,
+        });
       }
     });
 
     if (productsWithoutStock.length > 0) {
-      throw HttpError.createError(
-        new Error(
-          "Some products have insufficient stock to complete the purchase"
-        ),
-        422,
-        { productErrors: productsWithoutStock }
+      throw ThrowNewError(
+        ErrorNames.carts.MISSING_STOCK_TO_PURCHASE,
+        "Missing stock to puschase",
+        productsWithoutStock
       );
     }
 
@@ -99,6 +105,6 @@ export class MongoCartRepository extends MongoRepository {
 
     await this.deleteAll(id);
 
-    return "The tiecket was created and is ready to be searched";
+    return "The ticket was created and is ready to be searched";
   };
 }
