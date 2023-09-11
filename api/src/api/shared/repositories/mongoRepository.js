@@ -21,7 +21,7 @@ export class MongoRepository {
       const data = await this.model.findById(id);
 
       if (!data) {
-        throw ThrowNewError(ErrorNames.NOT_FOUND, "Not found");
+        throw ThrowNewError(ErrorNames.NOT_FOUND);
       }
 
       return data;
@@ -35,7 +35,7 @@ export class MongoRepository {
       const data = await this.model.findOne(params);
 
       if (!data) {
-        throw ThrowNewError(ErrorNames.NOT_FOUND, "Not found");
+        throw ThrowNewError(ErrorNames.NOT_FOUND);
       }
 
       return data;

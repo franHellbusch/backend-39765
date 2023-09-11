@@ -1,4 +1,6 @@
 export * from "./Anchor";
+export * from "./CircularSpiner";
+export * from "./CoverContainer";
 export * from "./FlexContainer";
 export * from "./FormContainer";
 export * from "./GlobalStyle";

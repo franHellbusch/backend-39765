@@ -10,6 +10,14 @@ export const register = async (user) => {
   return await axios.post(`${authApiUrl}/register`, user);
 };
 
+export const restoreRequest = async (email) => {
+  return await axios.post(`${authApiUrl}/restoreRequest`, {email});
+};
+
+export const restorePassword = async (password, restoreToken) => {
+  return await axios.post(`${authApiUrl}/restorePassword`, {password, restoreToken});
+};
+
 export const googleAuth = async () => {
   return await axios.get(`${authApiUrl}/auth/google`);
 };

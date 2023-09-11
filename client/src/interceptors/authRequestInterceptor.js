@@ -1,3 +1,4 @@
+import { errorHandler } from "@/utils";
 import axios from "axios";
 
 export const authRequestInterceptor = () => {
@@ -21,7 +22,7 @@ export const authRequestInterceptor = () => {
       return response.data;
     },
     (error) => {
-      return Promise.reject(error);
+      throw errorHandler(error.response.data);
     }
   );
 };

@@ -7,7 +7,9 @@ import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 import config from "../../shared/config/config.js";
 import { ErrorNames } from "../../shared/helpers/errorNames.js";
+import { ThrowNewError } from "../../shared/helpers/ThrowNewError.js";
 import { cookieExtractor } from "../../shared/utils/index.js";
+import userCustomErrorHandler from "../../user/infrastructure/helpers/UserCustomErrorHandler.js";
 
 export class PassportStrategyInstance {
   constructor(userRepository) {
@@ -74,28 +76,12 @@ export class PassportStrategyInstance {
 
   loginLocalStrategy = async (email, password, done) => {
     try {
-      if (!email.includes("@") || !email.includes(".")) {
-        return done(
-          {
-            message: "Invalid email, please enter a valid one",
-            name: ErrorNames.users.INVALID_EMAIL,
-            status: 400,
-          },
-          false
-        );
-      }
+      if (!email.includes("@") || !email.includes("."))
+        ThrowNewError(ErrorNames.users.INVALID_EMAIL);
 
       if (email === config.admin.email) {
-        if (password !== config.admin.password) {
-          return done(
-            {
-              message: "Invalid credentials",
-              name: ErrorNames.users.INVALID_CREDENTIALS,
-              status: 401,
-            },
-            false
-          );
-        }
+        if (password !== config.admin.password)
+          ThrowNewError(ErrorNames.users.INVALID_CREDENTIALS);
         return done(null, {
           email,
           role: "admin",
@@ -105,46 +91,22 @@ export class PassportStrategyInstance {
       const findUser = await this.userRepository.getByParams({ email });
 
       const isMatch = await bcrypt.compare(password, findUser.password);
-      if (!isMatch)
-        return done(
-          {
-            message: "Invalid credentials",
-            name: ErrorNames.users.INVALID_CREDENTIALS,
-            status: 401,
-          },
-          false
-        );
+      if (!isMatch) ThrowNewError(ErrorNames.users.INVALID_CREDENTIALS);
 
       done(null, findUser);
     } catch (err) {
-      done(err, false);
+      done(userCustomErrorHandler.handleError(err), false);
     }
   };
 
   registerLocalStrategy = async (req, email, password, done) => {
     try {
-      if (!email.includes("@") || !email.includes(".")) {
-        return done(
-          {
-            message: "Invalid email, please enter a valid one",
-            name: ErrorNames.users.INVALID_EMAIL,
-            status: 400,
-          },
-          false
-        );
-      }
+      if (!email.includes("@") || !email.includes("."))
+        ThrowNewError(ErrorNames.users.INVALID_EMAIL);
 
       if (email === config.admin.email) {
-        if (password !== config.admin.password) {
-          return done(
-            {
-              message: "Invalid credentials",
-              name: ErrorNames.users.INVALID_CREDENTIALS,
-              status: 401,
-            },
-            false
-          );
-        }
+        if (password !== config.admin.password)
+          ThrowNewError(ErrorNames.users.INVALID_CREDENTIALS);
         return done(null, {
           email,
           role: "admin",
@@ -155,7 +117,7 @@ export class PassportStrategyInstance {
 
       done(null, user);
     } catch (err) {
-      done(err, false);
+      done(userCustomErrorHandler.handleError(err), false);
     }
   };
 

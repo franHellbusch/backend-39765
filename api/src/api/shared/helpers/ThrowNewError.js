@@ -1,5 +1,5 @@
-export const ThrowNewError = (name, message, meta = null) => {
-  const newError = new Error(message);
+export const ThrowNewError = (name, meta = null) => {
+  const newError = new Error();
   newError.name = name;
   newError.meta = meta;
   throw newError;
