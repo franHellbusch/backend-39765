@@ -1,10 +1,15 @@
 export * from './Home/components/ProductList/components/ProductCard';
+export * from './Home/components/ProductList/components/ProductCard/styled-components';
 export * from './Home/components/ProductList/components';
 export * from './Home/components/ProductList';
 export * from './Home/components';
 export * from './Home';
 export * from './Login';
+export * from './Login/styled-components';
 export * from './Register';
+export * from './Register/styled-components';
+export { default as ForgotPassword } from './ForgotPassword';
+export { default as RestorePassword } from './RestorePassword';
 export * from './private/AdminDashboard/components/AdminProductList/components/AdminProductCard';
 export * from './private/AdminDashboard/components/AdminProductList/components';
 export * from './private/AdminDashboard/components/AdminProductList';

@@ -4,6 +4,7 @@ import { saveUser } from "@/store/states/user";
 import { PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 import {
+  CoverContainer,
   FlexContainer,
   FormContainer,
   HideButton,
@@ -24,16 +25,20 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const user = Object.fromEntries(formData);
+      const formData = new FormData(event.target);
+      const user = Object.fromEntries(formData);
 
-    user.displayName = `${user.name} ${user.lastName}`;
+      user.displayName = `${user.name} ${user.lastName}`;
 
-    const response = await register(user);
-    dispatch(saveUser(response.payload));
-    navigate(`/${PublicRoutes.HOME}`);
+      const response = await register(user);
+      dispatch(saveUser(response.payload));
+      navigate(`/${PublicRoutes.HOME}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleShowPassword = () => {
@@ -41,7 +46,7 @@ const Register = () => {
   };
 
   return (
-    <FlexContainer $width='100%' $height='calc(100vh - 72px)' $justify='center' $align='center'>
+    <CoverContainer>
       <FlexContainer $direction='column' $width='600px' $maxwidth='600px'>
         <SubTitle $marginbottom='30px'>Sign in</SubTitle>
         <FormContainer $width='100%' onSubmit={handleSubmit}>
@@ -118,7 +123,7 @@ const Register = () => {
           Already have an account? <StyledLink to={`/${PublicRoutes.LOGIN}`}>Log in</StyledLink>
         </Paragraph>
       </FlexContainer>
-    </FlexContainer>
+    </CoverContainer>
   );
 };
 

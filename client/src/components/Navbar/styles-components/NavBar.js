@@ -6,5 +6,5 @@ export const NavBar = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 10%;
-  border-bottom: 1px solid ${(props) => props.theme.colors.light};
+  box-shadow: ${(props) => props.theme.colors.light} 0px 1px 4px;
 `;

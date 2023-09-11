@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { passportCall } from "../../auth/services/passportAuthService.js";
-import { ErrorNames } from "../helpers/errorNames.js";
+import { ErrorNames } from "../helpers/ErrorNames.js";
 
 export default class BaseRouter {
   constructor(serviceName, constrollers = {}) {
@@ -66,11 +66,6 @@ export default class BaseRouter {
       res.status(status).json({
         success: true,
         payload,
-      });
-    res.sendError = (status, message) =>
-      res.status(status).json({
-        success: false,
-        message,
       });
     next();
   }

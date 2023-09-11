@@ -14,6 +14,8 @@ import { GlobalStyle } from "./styled-components/GlobalStyle";
 const Login = lazy(() => import("./pages/Login/Login"));
 const Home = lazy(() => import("./pages/Home/Home"));
 const Register = lazy(() => import("./pages/Register/Register"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword/ForgotPassword"));
+const RestorePassword = lazy(() => import("./pages/RestorePassword/RestorePassword"));
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
               <Route path={`/${PublicRoutes.HOME}`} element={<Home />} />
               <Route path={`/${PublicRoutes.LOGIN}`} element={<Login />} />
               <Route path={`/${PublicRoutes.REGISTER}`} element={<Register />} />
+              <Route path={`/${PublicRoutes.FORGOT_PASSWORD}`} element={<ForgotPassword />} />
+              <Route path={`/${PublicRoutes.RESTORE}`} element={<RestorePassword />} />
               <Route element={<AuthGuard />}>
                 <Route path={`/${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
               </Route>

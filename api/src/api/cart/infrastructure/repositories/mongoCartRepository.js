@@ -37,10 +37,7 @@ export class MongoCartRepository extends MongoRepository {
   updateProductQuantity = async (id, prodId, quantity) => {
     // eslint-disable-next-line valid-typeof
     if (!quantity || typeof quantity == String) {
-      throw ThrowNewError(
-        ErrorNames.carts.MISSING_QUANTITY,
-        "Missing product quantity"
-      );
+      throw ThrowNewError(ErrorNames.carts.MISSING_QUANTITY);
     }
 
     await this.productRepository.getById(prodId);
@@ -89,7 +86,6 @@ export class MongoCartRepository extends MongoRepository {
     if (productsWithoutStock.length > 0) {
       throw ThrowNewError(
         ErrorNames.carts.MISSING_STOCK_TO_PURCHASE,
-        "Missing stock to puschase",
         productsWithoutStock
       );
     }

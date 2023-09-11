@@ -16,6 +16,7 @@ import {
   OffVisibilityIcon,
   OnVisibilityIcon,
   HideButton,
+  CoverContainer,
 } from "@/styled-components";
 import {
   GithubButton,
@@ -33,26 +34,38 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const user = Object.fromEntries(formData);
+      const formData = new FormData(event.target);
+      const user = Object.fromEntries(formData);
 
-    const response = await login(user);
-    dispatch(saveUser(response.payload));
-    navigate(`/${PublicRoutes.HOME}`);
+      const response = await login(user);
+      dispatch(saveUser(response.payload));
+      navigate(`/${PublicRoutes.HOME}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleGoogleAuth = async () => {
-    const response = await googleAuth();
-    dispatch(saveUser(response.payload));
-    navigate(`/${PublicRoutes.HOME}`);
+    try {
+      const response = await googleAuth();
+      dispatch(saveUser(response.payload));
+      navigate(`/${PublicRoutes.HOME}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleGithubAuth = async () => {
-    const response = await githubAuth();
-    dispatch(saveUser(response.payload));
-    navigate(`/${PublicRoutes.HOME}`);
+    try {
+      const response = await githubAuth();
+      dispatch(saveUser(response.payload));
+      navigate(`/${PublicRoutes.HOME}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleShowPassword = () => {
@@ -60,7 +73,7 @@ const Login = () => {
   };
 
   return (
-    <FlexContainer $width='100%' $height='calc(100vh - 72px)' $align='center' $justify='center'>
+    <CoverContainer>
       <FlexContainer $direction='column' $width='600px' $maxwidth='600px'>
         <SubTitle $marginbottom='30px'>Login in</SubTitle>
         <FlexContainer $width='100%' $justify='space-between' $margin='15px 0'>
@@ -113,14 +126,19 @@ const Login = () => {
           </FlexContainer>
           <LogInButton type='submit'>Log In</LogInButton>
         </FormContainer>
-        <Anchor $alignself='center' $margin='20px 0'>
+        <StyledLink
+          to={`/${PublicRoutes.FORGOT_PASSWORD}`}
+          $underline={true}
+          $alignself='center'
+          $margin='20px 0'
+        >
           Forget your password
-        </Anchor>
+        </StyledLink>
         <Paragraph $alignself='center'>
           Dont you have an acount? <StyledLink to={`/${PublicRoutes.REGISTER}`}>Sign up</StyledLink>
         </Paragraph>
       </FlexContainer>
-    </FlexContainer>
+    </CoverContainer>
   );
 };
 

@@ -6,4 +6,5 @@ export const Paragraph = styled.p`
   font-weight: ${(props) => props.$weight || "400"};
   align-self: ${(props) => props.$alignself || "start"};
   margin: ${(props) => props.$margin || "0"};
+  text-align: ${(props) => props.$textalign || "auto"};
 `;

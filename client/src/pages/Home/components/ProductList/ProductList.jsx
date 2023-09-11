@@ -12,15 +12,23 @@ const ProductList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getProducts();
-      dispatch(saveProducts(response.payload));
+      try {
+        const response = await getProducts();
+        dispatch(saveProducts(response.payload));
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchData();
   }, []);
 
   const changePage = async (url) => {
-    const response = await getProducts(url);
-    dispatch(saveProducts(response.payload));
+    try {
+      const response = await getProducts(url);
+      dispatch(saveProducts(response.payload));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
