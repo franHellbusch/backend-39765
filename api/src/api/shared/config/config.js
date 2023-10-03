@@ -1,5 +1,3 @@
-import MongoStore from "connect-mongo";
-import { getMongoUrl } from "./mongo.js";
 import "dotenv/config.js";
 
 const config = {
@@ -13,12 +11,6 @@ const config = {
   server: {
     gretting: () => `Server up and running on port ${config.globals.port}`,
     apiVersion: "/api/v1",
-  },
-  session: {
-    secret: process.env.SECRET_KEY || "mysecret",
-    saveUninitialized: false,
-    resave: false,
-    store: MongoStore.create({ mongoUrl: getMongoUrl() }),
   },
   admin: {
     email: process.env.ADMIN_EMAIL || "adminCoder@coder.com",
