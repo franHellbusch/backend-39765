@@ -38,14 +38,14 @@ export class MongoProductRepository extends MongoRepository {
         totalPages,
         prevLink: !hasPrevPage
           ? null
-          : `http://localhost:${config.globals.port}${
+          : `${config.server.apiUrl}${
               config.server.apiVersion
             }/products?limit=${limit}&page=${prevPage}&sort=${
               sort || ""
             }&query=${query || ""}`,
         nextLink: !hasNextPage
           ? null
-          : `http://localhost:${config.globals.port}${
+          : `${config.server.apiUrl}${
               config.server.apiVersion
             }/products?limit=${limit}&page=${nextPage}&sort=${
               sort || ""
