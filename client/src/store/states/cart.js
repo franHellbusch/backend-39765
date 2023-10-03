@@ -12,6 +12,7 @@ const cartSlice = createSlice({
     saveCart: (state, action) => action.payload,
     removeAllProductsInCart: (state) => {
       state.products = [];
+      state.total = 0;
       return state;
     },
   },

@@ -7,6 +7,9 @@ const config = {
     port: process.env.PORT || 8080,
     env: process.env.NODE_ENV || "production",
   },
+  client: {
+    clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  },
   server: {
     gretting: () => `Server up and running on port ${config.globals.port}`,
     apiVersion: "/api/v1",
@@ -44,7 +47,7 @@ const config = {
     secret: process.env.SECRET || "jwtSecret",
   },
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
   },
   sendgrid: {

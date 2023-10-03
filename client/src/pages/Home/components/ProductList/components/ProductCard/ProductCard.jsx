@@ -1,37 +1,31 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { postProductInCart } from "@/services/cartService";
-import { saveCart } from "@/store/states/cart";
-import { Paragraph } from "@/styled-components";
-import { ProductCardContainter, ProductCardLink, ProductImage } from "./styled-components";
-import { useTheme } from "styled-components";
-import { PrivateRoutes } from "@/models";
+import { FlexContainer, Paragraph } from "@/styled-components";
+import {
+  ProductCardContainter,
+  ProductCardLink,
+  ProductImage,
+  ProductImageContainer,
+} from "./styled-components";
+import { PublicRoutes } from "@/models";
 
-const ProductCard = ({ product, cartId }) => {
-  const dispatch = useDispatch();
-  const theme = useTheme();
-
-  const sendProductToCart = async () => {
-    const response = await postProductInCart(cartId, product.id);
-    dispatch(saveCart(response.payload));
-  };
-
+const ProductCard = ({ product }) => {
   return (
-    <ProductCardContainter $width='250px' $direction='column' key={`${product.id}`}>
-      <ProductImage $width='100%' src={product.imageUrl} alt='product-image' />
-      <Paragraph $fontsize='16px' $margin='5px 15px 0 15px'>
-        {product.title}
-      </Paragraph>
-      <Paragraph $fontsize='16px' $weight='600' $margin='0 15px 5px 15px'>
-        ${product.price}
-      </Paragraph>
-      <ProductCardLink
-        to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CART}`}
-        onClick={sendProductToCart}
-      >
-        Send to cart
-      </ProductCardLink>
-    </ProductCardContainter>
+    <FlexContainer $width='calc(20% - 10px)' $padding='1rem 5px'>
+      <ProductCardContainter $direction='column' key={`${product.id}`}>
+        <ProductImageContainer>
+          <ProductImage src={product.presentationImage} alt='product-image' />
+        </ProductImageContainer>
+        <Paragraph $fontsize='15px' $margin='10px 15px 0 15px'>
+          {product.title}
+        </Paragraph>
+        <Paragraph $fontsize='16px' $weight='600' $margin='0 15px 10px 15px'>
+          ${product.price}
+        </Paragraph>
+        <ProductCardLink to={`/${PublicRoutes.PRODUCT_DETAIL}/${product.id}`}>
+          View Detail
+        </ProductCardLink>
+      </ProductCardContainter>
+    </FlexContainer>
   );
 };
 

@@ -1,4 +1,4 @@
-import { ErrorNames } from "./errorNames.js";
+import { ErrorNames } from "./ErrorNames.js";
 
 export const VerifyCustomErrorName = (err) => {
   const error = { ...err };

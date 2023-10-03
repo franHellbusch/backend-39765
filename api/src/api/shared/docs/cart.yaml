@@ -28,7 +28,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
   /api/v1/carts/{id}:
@@ -61,8 +61,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -71,7 +71,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "404":
@@ -80,8 +80,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
     delete:
@@ -119,8 +119,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -129,7 +129,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "404":
@@ -138,8 +138,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
   /api/v1/carts/{cid}/products/{pid}:
@@ -178,8 +178,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -188,7 +188,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "404":
@@ -197,8 +197,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
     put:
@@ -242,8 +242,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -261,8 +261,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
     delete:
@@ -306,8 +306,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -316,7 +316,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "404":
@@ -325,8 +325,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
   /api/v1/carts/{cid}/purchase:
@@ -339,12 +339,6 @@ paths:
           in: path
           required: true
           description: id para obtener el carrito
-          schema:
-            type: string
-        - name: pid
-          in: path
-          required: true
-          description: id para obtener el producto
           schema:
             type: string
       responses:
@@ -369,8 +363,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Wrong ID format entered
-                name: BAD_REQUEST
+                message: 'Bad Request: Invalid ID format entered'
+                name: WRONG_ID_FORMAT
                 status: 400
                 service: api-products
         "401":
@@ -379,7 +373,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "404":
@@ -388,8 +382,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Cart not found. Please check the cart ID and try again
+                name: CART_NOT_FOUND
                 status: 404
                 service: api-products
 
@@ -413,9 +407,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)
@@ -432,7 +431,8 @@ components:
         price: 200
         stock: 124
         code: fasdfsadf
-        imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        presentationImage: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        imageUrls: [ 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600', 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600' ]
         status: active
         category: sneakers
     Cart:
@@ -469,7 +469,8 @@ components:
               price: 200,
               stock: 124,
               code: fasdfsadf,
-              imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600,
+              presentationImage: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600,
+              imageUrls: [ 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600', 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600' ],
               status: active,
               category: sneakers
             },
@@ -496,9 +497,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)
@@ -523,9 +529,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)

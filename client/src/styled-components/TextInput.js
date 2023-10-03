@@ -6,7 +6,7 @@ export const TextInput = styled.input`
   color: ${(props) => props.$color || props.theme.text.dark};
   background: ${(props) => props.$background || props.theme.background.white};
   padding: ${(props) => props.$padding || "15px 10px"};
-  border: ${(props) => props.$border || `1px solid ${props.theme.colors.grey}`};
+  border: 1px solid ${(props) => props.$border || `${props.theme.colors.grey}`};
   outline: 0;
   border-radius: 10px;
   margin-top: ${(props) => props.$margintop || "0"};

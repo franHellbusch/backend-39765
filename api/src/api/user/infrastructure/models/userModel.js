@@ -39,6 +39,11 @@ export const UserSchema = new Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    provider: {
+      type: String,
+      enum: ["google", "github", "local"],
+      default: "local",
+    },
   },
   {
     timestamps: true,

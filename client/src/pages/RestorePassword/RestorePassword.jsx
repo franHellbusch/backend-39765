@@ -1,5 +1,6 @@
 import { restorePassword } from "@/services/userService";
 import {
+  CircularSpinner,
   CoverContainer,
   FlexContainer,
   HideButton,
@@ -14,13 +15,18 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ChangePasswordButton, PadlockIcon } from "./styled-components";
 import { ShieldIcon } from "./styled-components/ShieldIcon";
+import { useCatch } from "@/hooks";
+import { ErrorAlertMessage } from "@/components/ErrorAlertMessage";
 
 const RestorePassword = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const restoreToken = searchParams.get("restoreToken");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { error, saveError, closeError } = useCatch();
+  const { error: message, saveError: saveMessage, closeError: closeMessage } = useCatch();
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -28,10 +34,15 @@ const RestorePassword = () => {
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const response = await restorePassword(password, restoreToken);
-      console.log(response);
+      saveMessage(response.message);
     } catch (error) {
-      console.error(error);
+      saveError(error.message);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -41,7 +52,11 @@ const RestorePassword = () => {
 
   return (
     <>
-      <CoverContainer>
+      <CoverContainer $position='relative'>
+        {error && <ErrorAlertMessage error={error} closeError={closeError} errorLevel='error' />}
+        {message && (
+          <ErrorAlertMessage error={message} closeError={closeMessage} errorLevel='success' />
+        )}
         <FlexContainer $direction='column' $align='center' $width='600px' $maxwidth='600px'>
           <SubTitle $display='flex' $align='center'>
             <ShieldIcon />
@@ -72,7 +87,9 @@ const RestorePassword = () => {
             />
           </FlexContainer>
           <FlexContainer $margin='20px 0 0 0' $width='100%' $justify='center'>
-            <ChangePasswordButton onClick={handleSubmit}>Change</ChangePasswordButton>
+            <ChangePasswordButton onClick={handleSubmit} disabled={error || message ? true : false}>
+              {loading ? <CircularSpinner /> : "Change"}
+            </ChangePasswordButton>
           </FlexContainer>
         </FlexContainer>
       </CoverContainer>

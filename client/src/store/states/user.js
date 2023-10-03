@@ -1,4 +1,3 @@
-import { clearLocalStorage, getLocalStorage, setLocalStorage } from "@/utils";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -15,14 +14,12 @@ const initialState = {
 
 const userSlice = createSlice({
   name: "user",
-  initialState: getLocalStorage("user") || initialState,
+  initialState: initialState,
   reducers: {
     saveUser: (state, action) => {
-      setLocalStorage("user", action.payload);
       return action.payload;
     },
     removeUser: (state) => {
-      clearLocalStorage("user");
       return initialState;
     },
   },

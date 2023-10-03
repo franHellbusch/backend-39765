@@ -1,11 +1,10 @@
-import { githubAuth, googleAuth, login } from "@/services/userService";
+import { login } from "@/services/userService";
 import { useDispatch } from "react-redux";
 import { saveUser } from "@/store/states/user";
 import { PublicRoutes } from "@/models";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
-  Anchor,
   FlexContainer,
   FormContainer,
   Label,
@@ -27,11 +26,15 @@ import {
   OrBar,
   OrText,
 } from "./styled-components";
+import { useCatch } from "@/hooks";
+import { ErrorAlertMessage } from "@/components/ErrorAlertMessage";
+import { config } from "@/config/config";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const { error, saveError, closeError } = useCatch();
 
   const handleSubmit = async (event) => {
     try {
@@ -43,28 +46,24 @@ const Login = () => {
       const response = await login(user);
       dispatch(saveUser(response.payload));
       navigate(`/${PublicRoutes.HOME}`);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      saveError(err.message);
     }
   };
 
   const handleGoogleAuth = async () => {
     try {
-      const response = await googleAuth();
-      dispatch(saveUser(response.payload));
-      navigate(`/${PublicRoutes.HOME}`);
-    } catch (error) {
-      console.error(error);
+      window.open(`${config.apiUrl}/auth/google`, "_self");
+    } catch (err) {
+      saveError(err.message);
     }
   };
 
   const handleGithubAuth = async () => {
     try {
-      const response = await githubAuth();
-      dispatch(saveUser(response.payload));
-      navigate(`/${PublicRoutes.HOME}`);
-    } catch (error) {
-      console.error(error);
+      window.open(`${config.apiUrl}/auth/github`, "_self");
+    } catch (err) {
+      saveError(err.message);
     }
   };
 
@@ -73,18 +72,19 @@ const Login = () => {
   };
 
   return (
-    <CoverContainer>
+    <CoverContainer $position='relative'>
+      {error && <ErrorAlertMessage error={error} closeError={closeError} errorLevel='error' />}
       <FlexContainer $direction='column' $width='600px' $maxwidth='600px'>
         <SubTitle $marginbottom='30px'>Login in</SubTitle>
         <FlexContainer $width='100%' $justify='space-between' $margin='15px 0'>
-          <GoogleButton onClick={handleGoogleAuth}>
+          <GoogleButton disabled={error ? true : false} onClick={handleGoogleAuth}>
             <SocialMediaImage
               src='https://www.svgrepo.com/show/475656/google-color.svg'
               alt='google-logo'
             />
             Login with Google
           </GoogleButton>
-          <GithubButton onClick={handleGithubAuth}>
+          <GithubButton disabled={error ? true : false} onClick={handleGithubAuth}>
             <GithubIcon />
             Login with Github
           </GithubButton>
@@ -124,7 +124,13 @@ const Login = () => {
               required
             />
           </FlexContainer>
-          <LogInButton type='submit'>Log In</LogInButton>
+          <LogInButton
+            $disabled={error ? true : false}
+            type='submit'
+            disabled={error ? true : false}
+          >
+            Log In
+          </LogInButton>
         </FormContainer>
         <StyledLink
           to={`/${PublicRoutes.FORGOT_PASSWORD}`}

@@ -28,7 +28,12 @@ export const productSchema = new Schema(
       enum: ["active", "none"],
       default: "active",
     },
-    imageUrl: {
+    imageUrls: {
+      type: [String],
+      default: [],
+      required: true,
+    },
+    presentationImage: {
       type: String,
       required: true,
     },

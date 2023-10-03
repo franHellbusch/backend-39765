@@ -1,30 +1,47 @@
-import { PublicRoutes } from "@/models";
-import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { CoverContainer } from "@/styled-components";
+import React, { useState } from "react";
+import {
+  ProfileContainer,
+  ProfileNav,
+  ProfileShopingIcon,
+  ProfileStyledLink,
+  ProfileUserIcon,
+} from "./styled-components";
+import { useTheme } from "styled-components";
+import { ProfileSection, ShopingSection } from "./components";
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const userState = useSelector((store) => store.user);
+  const SECTIONS = {
+    PROFILE: "profile",
+    SHOPING: "shoping",
+  };
+
+  const theme = useTheme();
+  const [section, setSection] = useState(SECTIONS.PROFILE);
+
+  const navigateTo = (section) => {
+    setSection(section);
+  };
 
   return (
-    <>
-      <h2>Profile</h2>
-      <ul>
-        <li>Email: {userState.email}</li>
-        <li>Role: {userState.role}</li>
-        {userState.displayName && <li>DisplayName: {userState.displayName}</li>}
-        {userState.name && <li>Name: {userState.name}</li>}
-        {userState.lastName && <li>LastName: {userState.lastName}</li>}
-        {userState.age && <li>Age: {userState.age}</li>}
-        {userState.cart && <li>Cart: {userState.cart}</li>}
-        {userState.picture && (
-          <li>
-            Picture: <img src={userState.picture} alt='user_img' />
-          </li>
-        )}
-      </ul>
-    </>
+    <CoverContainer $position='relative' $align='flex-start' $background={theme.colors.extraLight}>
+      <ProfileContainer>
+        <ProfileNav>
+          <ProfileStyledLink
+            $active={section == SECTIONS.PROFILE}
+            onClick={() => navigateTo(SECTIONS.PROFILE)}>
+            <ProfileUserIcon /> Profile
+          </ProfileStyledLink>
+          <ProfileStyledLink
+            $active={section == SECTIONS.SHOPING}
+            onClick={() => navigateTo(SECTIONS.SHOPING)}>
+            <ProfileShopingIcon /> Shoping
+          </ProfileStyledLink>
+        </ProfileNav>
+        {section == SECTIONS.PROFILE && <ProfileSection />}
+        {section == SECTIONS.SHOPING && <ShopingSection />}
+      </ProfileContainer>
+    </CoverContainer>
   );
 };
 

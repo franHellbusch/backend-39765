@@ -12,10 +12,14 @@ import {
 import { useState } from "react";
 import { ArrowIcon, MailIcon, SendEmailButton } from "./styled-components";
 import { PublicRoutes } from "@/models";
+import { ErrorAlertMessage } from "@/components/ErrorAlertMessage";
+import { useCatch } from "@/hooks";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const { error, saveError, closeError } = useCatch();
+  const { error: message, saveError: saveMessage, closeError: closeMessage } = useCatch();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -25,9 +29,9 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const response = await restoreRequest(email);
-      console.log(response);
+      saveMessage(response.message);
     } catch (error) {
-      console.log(error);
+      saveError(error.message);
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -36,7 +40,11 @@ const ForgotPassword = () => {
   };
 
   return (
-    <CoverContainer>
+    <CoverContainer $position='relative'>
+      {error && <ErrorAlertMessage error={error} closeError={closeError} errorLevel='error' />}
+      {message && (
+        <ErrorAlertMessage error={message} closeError={closeMessage} errorLevel='success' />
+      )}
       <FlexContainer $direction='column' $width='600px' $maxwidth='600px'>
         <SubTitle $display='flex' $align='center'>
           Send a verification email
@@ -61,7 +69,7 @@ const ForgotPassword = () => {
             <ArrowIcon />
             Go back login
           </StyledLink>
-          <SendEmailButton onClick={handleSubmit} disabled={loading ? true : false}>
+          <SendEmailButton onClick={handleSubmit} disabled={error || message ? true : false}>
             {loading ? <CircularSpinner /> : "Enviar"}
           </SendEmailButton>
         </FlexContainer>

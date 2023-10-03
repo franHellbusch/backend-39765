@@ -1,12 +1,11 @@
 import httpStatus from "http-status";
 
 export class HttpError extends Error {
-  constructor({ message, name, status, stack, meta }) {
+  constructor({ message, name, status, meta }) {
     super(message);
 
     this.name = name;
     this.status = status;
-    this.stack = stack;
 
     if (meta) {
       this.meta = meta;
@@ -25,7 +24,6 @@ export class HttpError extends Error {
       message,
       name,
       status,
-      stack: err.stack,
       meta,
     });
   };

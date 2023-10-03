@@ -22,7 +22,7 @@ export const authRequestInterceptor = () => {
       return response.data;
     },
     (error) => {
-      throw errorHandler(error.response.data);
+      throw errorHandler(error?.response?.data || error);
     }
   );
 };

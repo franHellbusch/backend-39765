@@ -1,25 +1,28 @@
+import { config } from "@/config/config";
 import axios from "axios";
 
-const authApiUrl = "http://localhost:8080/api/v1";
-
 export const getCartById = async (id) => {
-  return await axios.get(`${authApiUrl}/carts/${id}`);
+  return await axios.get(`${config.apiUrl}/carts/${id}`);
 };
 
 export const postProductInCart = async (cartId, productId) => {
-  return await axios.post(`${authApiUrl}/carts/${cartId}/products/${productId}`);
+  return await axios.post(`${config.apiUrl}/carts/${cartId}/products/${productId}`);
 };
 
-export const updateProuctQuantityInCart = async (cartId, productId, quantity) => {
+export const updateProductQuantityInCart = async (cartId, productId, quantity) => {
   const queryParams = `?quantity=${quantity}`;
 
-  return await axios.put(`${authApiUrl}/carts/${cartId}/products/${productId}${queryParams}`);
+  return await axios.put(`${config.apiUrl}/carts/${cartId}/products/${productId}${queryParams}`);
 };
 
 export const deleteProductInCart = async (cartId, productId) => {
-  return await axios.delete(`${authApiUrl}/carts/${cartId}/products/${productId}`);
+  return await axios.delete(`${config.apiUrl}/carts/${cartId}/products/${productId}`);
 };
 
 export const deleteAllProductsInCart = async (id) => {
-  return await axios.delete(`${authApiUrl}/carts/${id}`);
+  return await axios.delete(`${config.apiUrl}/carts/${id}`);
+};
+
+export const finishPurchase = async (cartId) => {
+  return await axios.post(`${config.apiUrl}/carts/${cartId}/purchase`);
 };

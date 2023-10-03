@@ -1,4 +1,4 @@
-import { ErrorNames } from "../../../shared/helpers/errorNames.js";
+import { ErrorNames } from "../../../shared/helpers/ErrorNames.js";
 import { ThrowNewError } from "../../../shared/helpers/ThrowNewError.js";
 import { MongoRepository } from "../../../shared/repositories/mongoRepository.js";
 import cartCustomErrorHandler from "../helpers/CartCustomErrorHandler.js";

@@ -1,4 +1,6 @@
 import passport from "passport";
+import { ErrorNames } from "../../shared/helpers/ErrorNames.js";
+import { logger } from "../../shared/utils/logger.js";
 import { User } from "../../user/domain/user.js";
 
 export const passportCall = (strategy, options = {}) => {
@@ -6,8 +8,8 @@ export const passportCall = (strategy, options = {}) => {
     passport.authenticate(strategy, (err, user, info) => {
       if (err) return next(err);
       if (!options.strategyType) {
-        console.log(`Route ${req.url} doesn't have defined a strategyType`);
-        return res.sendServerError();
+        logger.info(`Route ${req.url} doesn't have defined a strategyType`);
+        return next({ name: ErrorNames.INTERNAL_SERVER_ERROR, status: 500 });
       }
 
       if (!user) {
