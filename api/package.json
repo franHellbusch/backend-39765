@@ -4,6 +4,9 @@
   "description": "Repositorio con todos los desafios de mi cursada de Back-End en CoderHouse",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=14 <17"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
