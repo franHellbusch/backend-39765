@@ -1,17 +1,47 @@
-import React from "react";
-import { AdminProductList, ProductForm } from "./components";
-import { useNavigate } from "react-router-dom";
-import { PrivateRoutes, PublicRoutes } from "@/models";
+import React, { useState } from "react";
+import { CoverContainer } from "@/styled-components";
+import {
+  AdminContainer,
+  AdminNav,
+  AdminStyledLink,
+  CreateProductIcon,
+  ProductListIcon,
+} from "./styled-components";
+import { useTheme } from "styled-components";
+import { AdminProductList, CreateProductSection } from "./components";
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
+  const SECTIONS = {
+    CREATE_PRODUCT: "createProduct",
+    PRODUCT_LIST: "shoping",
+  };
+
+  const theme = useTheme();
+  const [section, setSection] = useState(SECTIONS.CREATE_PRODUCT);
+
+  const navigateTo = (section) => {
+    setSection(section);
+  };
 
   return (
-    <>
-      <h2>Admin</h2>
-      <AdminProductList />
-      <ProductForm />
-    </>
+    <CoverContainer $position='relative' $align='flex-start' $background={theme.colors.extraLight}>
+      <AdminContainer>
+        <AdminNav>
+          <AdminStyledLink
+            $active={section == SECTIONS.CREATE_PRODUCT}
+            onClick={() => navigateTo(SECTIONS.CREATE_PRODUCT)}>
+            <CreateProductIcon /> Create Product
+          </AdminStyledLink>
+          <AdminStyledLink
+            $active={section == SECTIONS.PRODUCT_LIST}
+            onClick={() => navigateTo(SECTIONS.PRODUCT_LIST)}>
+            <ProductListIcon /> Products
+          </AdminStyledLink>
+        </AdminNav>
+        {section == SECTIONS.CREATE_PRODUCT && <CreateProductSection />}
+        {section == SECTIONS.PRODUCT_LIST && <AdminProductList />}
+      </AdminContainer>
+    </CoverContainer>
   );
 };
 

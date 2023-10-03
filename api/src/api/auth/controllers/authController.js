@@ -51,7 +51,7 @@ export class AuthController {
 
       res.sendSuccess(200, "Email successfully sent");
     } catch (error) {
-      throw userCustomErrorHandler(error);
+      throw userCustomErrorHandler.handleError(error);
     }
   };
 
@@ -69,7 +69,7 @@ export class AuthController {
 
       res.sendSuccess(200, "Password changed");
     } catch (error) {
-      throw userCustomErrorHandler(error);
+      throw userCustomErrorHandler.handleError(error);
     }
   };
 
@@ -80,7 +80,7 @@ export class AuthController {
         maxAge: 1000 * 3600 * 24,
         httpOnly: true,
       })
-      .sendSuccessWithPayload(200, req.user);
+      .redirect(config.client.clientUrl);
   };
 
   googleAuthCallback = (req, res, _next) => {
@@ -90,7 +90,7 @@ export class AuthController {
         maxAge: 1000 * 3600 * 24,
         httpOnly: true,
       })
-      .sendSuccessWithPayload(200, req.user);
+      .redirect(config.client.clientUrl);
   };
 
   currentUser = async (req, res, _next) => {

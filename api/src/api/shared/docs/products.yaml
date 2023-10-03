@@ -23,26 +23,26 @@ paths:
                   payload:
                     $ref: '#/components/schemas/Product'
         "400":
-          description: Cuando falta uno de los paths requeridos
+          description: Faltan campos de usuario o el email no es valido
           content:
             application/json:
               example:
                 success: false
-                message: Missing (price) paths
-                name: BAD_REQUEST
+                message: 'Bad Request: Some required fields are missing'
+                name: MISSING_PATHS
                 status: 400
                 meta:
-                    errors: [
-                      "price"
-                    ]
-                service: api-products
+                  errors: [
+                    "displayName"
+                  ]
+                service: api-auth
         "401":
           description: Cuando el usuario no esta logeado
           content:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "403":
@@ -51,7 +51,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: Forbidden
+                message: 'Forbidden: You do not have permission to perform this action'
                 name: FORBIDDEN
                 status: 403
     get:
@@ -127,8 +127,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Product not found. Please check the product ID and try again.
+                name: PRODUCT_NOT_FOUND
                 status: 404
                 service: api-products
     put:
@@ -176,7 +176,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "403":
@@ -185,7 +185,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: Forbidden
+                message: 'Forbidden: You do not have permission to perform this action'
                 name: FORBIDDEN
                 status: 403
         "404":
@@ -194,8 +194,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Product not found. Please check the product ID and try again.
+                name: PRODUCT_NOT_FOUND
                 status: 404
                 service: api-products
     delete:
@@ -249,7 +249,7 @@ paths:
             application/json:
               example:
                 success: false
-                message: No auth token
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
                 name: UNAUTHORIZED
                 status: 401
         "403":
@@ -258,7 +258,7 @@ paths:
             application/json:
               example:
                 success": false
-                message: Forbidden
+                message: 'Forbidden: You do not have permission to perform this action'
                 name: FORBIDDEN
                 status: 403
         "404":
@@ -267,8 +267,8 @@ paths:
             application/json:
               example:
                 success: false
-                message: Not found
-                name: NOT_FOUND
+                message: Product not found. Please check the product ID and try again.
+                name: PRODUCT_NOT_FOUND
                 status: 404
                 service: api-products
 
@@ -292,9 +292,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)
@@ -311,7 +316,8 @@ components:
         price: 200
         stock: 124
         code: fasdfsadf
-        imageUrl: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        presentationImage: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        imageUrls: [ 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600', 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600' ]
         status: active
         category: sneakers
   requestBodies:
@@ -333,9 +339,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)
@@ -360,9 +371,14 @@ components:
         code:
           type: string
           description: codigo de producto
-        imageUrl:
+        presentationImage:
           type: string
-          description: Url de la imagen subida en la nube
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
         status:
           type: string
           description: Valor que indica el estado del producto (active o none)

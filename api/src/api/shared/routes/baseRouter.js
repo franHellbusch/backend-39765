@@ -79,7 +79,7 @@ export default class BaseRouter {
         return next({ name: ErrorNames.UNAUTHORIZED, status: 401 });
       if (policies[0] === "NO_AUTH" && !user) return next();
 
-      if (!user) return next({ ...req.error });
+      if (!user) return next({ name: ErrorNames.UNAUTHORIZED, status: 401 });
       if (!policies.includes(user.role.toUpperCase()))
         return next({ name: ErrorNames.FORBIDDEN, status: 403 });
       next();

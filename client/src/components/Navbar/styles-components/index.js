@@ -1,3 +1,4 @@
+export * from "./AdminIcon";
 export * from "./CartIcon";
 export * from "./HomeIcon";
 export * from "./LinkSeparationBar";

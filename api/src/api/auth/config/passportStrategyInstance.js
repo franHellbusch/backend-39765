@@ -1,12 +1,11 @@
 import bcrypt from "bcrypt";
-import httpStatus from "http-status";
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { OAuth2Strategy as GoogleStrategy } from "passport-google-oauth";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 import config from "../../shared/config/config.js";
-import { ErrorNames } from "../../shared/helpers/errorNames.js";
+import { ErrorNames } from "../../shared/helpers/ErrorNames.js";
 import { ThrowNewError } from "../../shared/helpers/ThrowNewError.js";
 import { cookieExtractor } from "../../shared/utils/index.js";
 import userCustomErrorHandler from "../../user/infrastructure/helpers/UserCustomErrorHandler.js";
@@ -90,6 +89,9 @@ export class PassportStrategyInstance {
 
       const findUser = await this.userRepository.getByParams({ email });
 
+      if (findUser.provider != "local")
+        ThrowNewError(ErrorNames.users.DUPLICATE_EMAIL);
+
       const isMatch = await bcrypt.compare(password, findUser.password);
       if (!isMatch) ThrowNewError(ErrorNames.users.INVALID_CREDENTIALS);
 
@@ -131,16 +133,21 @@ export class PassportStrategyInstance {
             : ""),
         displayName: profile.displayName,
         picture: profile._json.avatar_url,
+        provider: "github",
       };
 
       let user = {};
+
       try {
         user = await this.userRepository.saveUser(userData);
       } catch (err) {
-        if (err.name == httpStatus[`${httpStatus.CONFLICT}_NAME`]) {
+        if (err.name == ErrorNames.users.DUPLICATE_EMAIL) {
           user = await this.userRepository.getByParams({
             email: userData.email,
           });
+
+          if (user.provider != "github")
+            ThrowNewError(ErrorNames.users.DUPLICATE_EMAIL);
         } else {
           done(err, false);
         }
@@ -154,7 +161,6 @@ export class PassportStrategyInstance {
 
   googleStrategy = async (accessToken, refreshToken, profile, done) => {
     try {
-      console.log(profile);
       const userData = {
         email:
           profile._json.email ||
@@ -165,16 +171,21 @@ export class PassportStrategyInstance {
         name: profile._json.given_name || null,
         lastName: profile._json.family_name || null,
         picture: profile._json.picture,
+        provider: "google",
       };
 
       let user = {};
+
       try {
         user = await this.userRepository.saveUser(userData);
       } catch (err) {
-        if (err.name == httpStatus[`${httpStatus.CONFLICT}_NAME`]) {
+        if (err.name == ErrorNames.users.DUPLICATE_EMAIL) {
           user = await this.userRepository.getByParams({
             email: userData.email,
           });
+
+          if (user.provider != "google")
+            ThrowNewError(ErrorNames.users.DUPLICATE_EMAIL);
         } else {
           done(err, false);
         }

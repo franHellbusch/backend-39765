@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import CustomErrorHandler from "../../../shared/helpers/CustomErrorHanlder.js";
-import { ErrorNames } from "../../../shared/helpers/errorNames.js";
+import { ErrorNames } from "../../../shared/helpers/ErrorNames.js";
 import { HttpError } from "../../../shared/helpers/HttpError.js";
 
 class ProductCustomErrorHandler extends CustomErrorHandler {

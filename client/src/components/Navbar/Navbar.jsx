@@ -11,6 +11,7 @@ import {
   LogoutIcon,
   UserIcon,
   HomeIcon,
+  AdminIcon,
 } from "./styles-components";
 import { logout } from "@/services/userService";
 import { FlexContainer, StyledLink, Title } from "@/styled-components";
@@ -41,8 +42,7 @@ const Navbar = () => {
           $weight='500'
           $underline={false}
           $color={theme.text.grey}
-          to={`/${PublicRoutes.HOME}`}
-        >
+          to={`/${PublicRoutes.HOME}`}>
           <HomeIcon />
           Home
         </StyledLink>
@@ -52,24 +52,28 @@ const Navbar = () => {
             {role == Roles.ADMIN && (
               <>
                 <StyledLink
+                  $display='flex'
+                  $align='center'
                   $weight='500'
                   $underline={false}
                   $color={theme.text.grey}
-                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`}
-                >
-                  AdminDashboard
+                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`}>
+                  <AdminIcon />
+                  Admin
                 </StyledLink>
                 <LinkSeparationBar />
               </>
             )}
-            {email ? (
+            {email && role != Roles.ADMIN && (
               <>
                 <StyledLink
+                  $display='flex'
+                  $align='center'
                   $weight='500'
                   $underline={false}
                   $color={theme.text.grey}
-                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.PROFILE}`}
-                >
+                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.PROFILE}`}>
+                  <UserIcon />
                   Profile
                 </StyledLink>
                 <LinkSeparationBar />
@@ -79,12 +83,25 @@ const Navbar = () => {
                   $weight='500'
                   $underline={false}
                   $color={theme.text.grey}
-                  onClick={handleClick}
-                >
+                  to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CART}`}>
+                  <CartIcon />
+                  Cart
+                </StyledLink>
+                <LinkSeparationBar />
+              </>
+            )}
+            {email ? (
+              <>
+                <StyledLink
+                  $display='flex'
+                  $align='center'
+                  $weight='500'
+                  $underline={false}
+                  $color={theme.text.grey}
+                  onClick={handleClick}>
                   <LogoutIcon />
                   Logout
                 </StyledLink>
-                <LinkSeparationBar />
               </>
             ) : (
               <>
@@ -94,25 +111,12 @@ const Navbar = () => {
                   $weight='500'
                   $underline={false}
                   $color={theme.text.grey}
-                  to={`/${PublicRoutes.LOGIN}`}
-                >
+                  to={`/${PublicRoutes.LOGIN}`}>
                   <UserIcon />
                   Sign In/Sign Up
                 </StyledLink>
-                <LinkSeparationBar />
               </>
             )}
-            <StyledLink
-              $display='flex'
-              $align='center'
-              $weight='500'
-              $underline={false}
-              $color={theme.text.grey}
-              to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CART}`}
-            >
-              <CartIcon />
-              Cart
-            </StyledLink>
           </>
         )}
       </FlexContainer>

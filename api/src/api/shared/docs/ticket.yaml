@@ -1,0 +1,158 @@
+paths:
+  /api/v1/ticket/{email}:
+    get:
+      summary: Traer ticket
+      tags:
+        - Tickets
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email para obtener el ticket
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Informacion del ticket
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/Ticket'
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: 'Unauthorized Access: Access Denied. Please log in or contact the administrator.'
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Ticket no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Ticket not found. Please check the ticket ID and try again.
+                name: TICKET_NOT_FOUND
+                status: 404
+                service: api-tickets
+        "409":
+          description: Ticket no encontrado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Ticket code already exists. Please generate a new code for the ticket
+                name: DUPLICATE_TICKET_CODE
+                status: 409
+                service: api-tickets
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        code:
+          type: string
+          description: codigo de producto
+        presentationImage:
+          type: string
+          description: Url de la imagen principal subida en la nube
+        imageUrls:
+          type: array
+          description: Array de URLs de imágenes
+          items:
+            type: string
+        status:
+          type: string
+          description: Valor que indica el estado del producto (active o none)
+        category:
+          type: string
+          description: Categoria del producto
+        id: 
+          type: string
+          description: Id autogenerado por Mongo
+      example:
+        id: 64b86f8cfda193489dc8858f
+        title: Sneakers
+        description: This sneakers are only for gods
+        price: 200
+        stock: 124
+        code: fasdfsadf
+        presentationImage: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600
+        imageUrls: [ 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600', 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600' ]
+        status: active
+        category: sneakers
+    Ticket:
+      type: object
+      properties:
+        id: 
+          type: string
+          description: Id autogenerado por Mongose
+        code:
+          type: string
+          description: Codigo de identificacion del ticket
+        purchase_datetime:
+          type: string
+          description: Fecha de cierre de la compra
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                description: La cantidad del producto
+              product:
+                $ref: '#components/schemas/Product'
+              subtotal:
+                type: number
+                description: subtotal del producto por su cantidad
+        amount:
+          type: number
+          description: Total de la compra
+        purchaser:
+          type: string
+          description: Email del comprador
+      example:
+        id: 64b86f8cfda193489dc8858f
+        code: 3722baed-6ee4-4216-aad3-10e45ab18fc7
+        purchase_datetime: 2023-9-25T18:30:17.310+00:00
+        products: [
+          {
+            quantity: 1,
+            product: {
+              id: 64b86f8cfda193489dc8858f,
+              title: Sneakers,
+              description: This sneakers are only for gods,
+              price: 200,
+              stock: 124,
+              code: fasdfsadf,
+              presentationImage: https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600,
+              imageUrls: [ 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600', 'https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1600' ],
+              status: active,
+              category: sneakers
+            },
+            subtotal: 200
+          }
+        ]
+        amount: 200
+        purchaser: comprador@gmail.com

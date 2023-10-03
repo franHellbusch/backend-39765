@@ -2,8 +2,15 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteProductById } from "@/services/productService";
 import { removeProduct } from "@/store/states/product";
+import {
+  AdminDeleteProductButton,
+  AdminProductImage,
+  AdminProductListRow,
+  AdminProductSeparator,
+} from "./styled-components";
+import { FlexContainer, Paragraph } from "@/styled-components";
 
-const AdminProductCard = ({ product }) => {
+const AdminProductCard = ({ product, salient }) => {
   const dispatch = useDispatch();
 
   const deleteProduct = async () => {
@@ -12,16 +19,33 @@ const AdminProductCard = ({ product }) => {
   };
 
   return (
-    <tr key={`${product.id}`}>
-      <td style={{ border: "1px solid black", padding: "5px" }}>{product.title}</td>
-      <td style={{ border: "1px solid black", padding: "5px" }}>${product.price}</td>
-      <td style={{ border: "1px solid black", padding: "5px" }}>{product.description}</td>
-      <td style={{ border: "1px solid black", padding: "5px" }}>{product.stock}</td>
-      <td style={{ border: "1px solid black", padding: "5px" }}>{product.category}</td>
-      <td style={{ border: "1px solid black", padding: "5px" }}>
-        <button onClick={deleteProduct}>deleteProduct</button>
-      </td>
-    </tr>
+    <AdminProductListRow $salient={salient}>
+      <AdminProductImage>
+        <img src={product.presentationImage} alt='product-image' />
+      </AdminProductImage>
+      <AdminProductSeparator />
+      <FlexContainer $direction='column'>
+        <Paragraph $weight='600'>Title:</Paragraph>
+        <Paragraph $fontsize='13px'>{product.title}</Paragraph>
+      </FlexContainer>
+      <AdminProductSeparator />
+      <FlexContainer $direction='column'>
+        <Paragraph $weight='600'>Price:</Paragraph>
+        <Paragraph $fontsize='13px'>$ {product.price}</Paragraph>
+      </FlexContainer>
+      <AdminProductSeparator />
+      <FlexContainer $direction='column'>
+        <Paragraph $weight='600'>Stock:</Paragraph>
+        <Paragraph $fontsize='13px'>{product.stock}</Paragraph>
+      </FlexContainer>
+      <AdminProductSeparator />
+      <FlexContainer $direction='column'>
+        <Paragraph $weight='600'>Category:</Paragraph>
+        <Paragraph $fontsize='13px'>{product.category}</Paragraph>
+      </FlexContainer>
+      <AdminProductSeparator />
+      <AdminDeleteProductButton onClick={deleteProduct}>Delete</AdminDeleteProductButton>
+    </AdminProductListRow>
   );
 };
 

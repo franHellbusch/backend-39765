@@ -6,7 +6,9 @@ export const LogInButton = styled.button`
   border: 1px solid ${(props) => props.theme.colors.primary};
   border-radius: 10px;
   transition: 0.3s;
-  background: ${(props) => props.theme.colors.primary};
+  background: ${(props) =>
+    props.$disabled ? props.theme.colors.primaryLight : props.theme.colors.primary};
+  opacity: ${(props) => (props.$disabled ? "0.7" : "1")};
   font-size: 16px;
   font-weight: 600;
   color: #fff;

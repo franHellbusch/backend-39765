@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import { ErrorNames } from "./errorNames.js";
+import { ErrorNames } from "./ErrorNames.js";
 import { HttpError } from "./HttpError.js";
 import { VerifyCustomErrorName } from "./VerifyCustomErrorName.js";
 

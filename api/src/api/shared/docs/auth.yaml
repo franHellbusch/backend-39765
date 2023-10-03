@@ -1,0 +1,393 @@
+paths:
+  /api/v1/register:
+    post:
+      summary: Registro del usuario
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/CreateUser'
+      responses:
+        "200":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/User'
+        "400":
+          description: Faltan campos de usuario o el email no es valido
+          content:
+            application/json:
+              examples:
+                missing_paths:
+                  value:
+                    success: false
+                    message: 'Bad Request: Some required fields are missing'
+                    name: MISSING_PATHS
+                    status: 400
+                    meta:
+                      errors: [
+                        "displayName"
+                      ]
+                    service: api-auth
+                invalid_email:
+                  value:
+                    success: false
+                    message: Invalid email, please enter a valid one
+                    name: INVALID_EMAIL
+                    status: 401
+        "401":
+          description: Cuando el usuario ya esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+        "409":
+          description: Cuando el email ya siendo usado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Email address is already in use. Please choose a different one
+                name: DUPLICATE_EMAIL
+                status: 409
+  /api/v1/login:
+    post:
+      summary: Logeo de usuario
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/LoginUser'
+      responses:
+        "200":
+          description: Usuario completo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/User'
+        "400":
+          description: El email no es valido
+          content:
+            application/json:
+              example:
+                success: false
+                message: Invalid email, please enter a valid one
+                name: INVALID_EMAIL
+                status: 401
+        "401":
+          description: Cuando el usuario ya esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Cuando el usuario no se encuentra
+          content:
+            application/json:
+              example:
+                success: false
+                message: Missing credentials
+                name: USER_NOT_FOUND
+                status: 404
+  /api/v1/logout:
+    post:
+      summary: Hacer logout
+      tags:
+        - User
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/CreateProduct'
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              example:
+                success: true
+                message: Success logout
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+  /api/v1/restoreRequest:
+    post:
+      summary: Pedir mail de recuperacion
+      tags:
+        - User
+      requestBody:
+        required: false
+        content:
+          application/json:
+            example:
+              email: 'Your Email Address'
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              example:
+                success: true
+                message: Email successfully sent
+        "401":
+          description: Cuando el usuario esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+  /api/v1/restorePassword:
+    post:
+      summary: Cambiar contraseña
+      tags:
+        - User
+      responses:
+        "200":
+          description: Contraseña cambiada
+          content:
+            application/json:
+              example:
+                success: true
+                message: Password changed
+        "401":
+          description: Cuando el usuario esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: No auth token
+                name: UNAUTHORIZED
+                status: 401
+        "404":
+          description: Cuando el usuario no se encuentra
+          content:
+            application/json:
+              example:
+                success: false
+                message: Missing credentials
+                name: USER_NOT_FOUND
+                status: 404
+        "409":
+          description: Cuando la contraseña es la misma
+          content:
+            application/json:
+              example:
+                success: false
+                message: Can't be the same password. Please choose a different one
+                name: DUPLICATE_PASSWORD
+                status: 409
+  /api/v1/auth/google:
+    get:
+      summary: Login with google
+      tags:
+        - User
+      responses:
+        "200":
+          description: Informacion del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/User'
+        "401":
+          description: Cuando el usuario ya esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+        "409":
+          description: Cuando el email ya siendo usado  en el servicio local
+          content:
+            application/json:
+              example:
+                success: false
+                message: Email address is already in use. Please choose a different one
+                name: DUPLICATE_EMAIL
+                status: 409
+  /api/v1/auth/github:
+    get:
+      summary: Login with github
+      tags:
+        - User
+      responses:
+        "200":
+          description: Informacion del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/User'
+        "401":
+          description: Cuando el usuario ya esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+        "409":
+          description: Cuando el email ya siendo usado en el servicio local
+          content:
+            application/json:
+              example:
+                success: false
+                message: Email address is already in use. Please choose a different one
+                name: DUPLICATE_EMAIL
+                status: 409
+  /api/v1/current:
+    get:
+      summary: Obtener la informacion del usuario ya logeado
+      tags:
+        - User
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/CreateProduct'
+      responses:
+        "200":
+          description: Informacion del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    $ref: '#/components/schemas/User'
+        "401":
+          description: Cuando el usuario no esta logeado
+          content:
+            application/json:
+              example:
+                success: false
+                message: Unauthorized
+                name: UNAUTHORIZED
+                status: 401
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+        displayName:
+          type: string
+          description: Nombre completo
+        name:
+          type: string
+          description: Nombre de usuario
+        lastName:
+          type: string
+          description: Apellido de usuario
+        age:
+          type: number
+          description: Edad del usuario
+        picture:
+          type: string
+          description: Url de foto de perfil del usuario
+        role:
+          type: string
+          description: Rol del usuario
+        cart:
+          type: string
+          description: ID del carrito asignado al usuario
+        id: 
+          type: string
+          description: Id autogenerado por Mongo
+      example:
+        id: 6516dfee53392b2e8
+        email: youremail@gmail.com
+        displayName: Nombre Apellido
+        name: Nombre
+        lastName: Apellido
+        age: 19
+        picture: https://lh3.googleusercontent.com/a/ACg8ocJH1pkczlZBoS9XSFR5EPobm5nXOF9snXL2CBb_guTR=s96-c
+        role: user
+        cart: 6516dfee53392b2e8
+  requestBodies:
+    CreateUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+        displayName:
+          type: string
+          description: Nombre completo
+        name:
+          type: string
+          description: Nombre de usuario
+        lastName:
+          type: string
+          description: Apellido de usuario
+        age:
+          type: number
+          description: Edad del usuario
+        picture:
+          type: string
+          description: Url de foto de perfil del usuario
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+      

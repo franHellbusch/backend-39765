@@ -1,5 +1,5 @@
 import CustomErrorHandler from "../helpers/CustomErrorHanlder.js";
-import { ErrorNames } from "../helpers/errorNames.js";
+import { ErrorNames } from "../helpers/ErrorNames.js";
 import { ThrowNewError } from "../helpers/ThrowNewError.js";
 
 export class MongoRepository {

@@ -18,11 +18,14 @@ import {
 } from "@/styled-components";
 import { RegisterButton } from "./styled-components";
 import { useState } from "react";
+import { useCatch } from "@/hooks";
+import { ErrorAlertMessage } from "@/components/ErrorAlertMessage";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const { error, saveError, closeError } = useCatch();
 
   const handleSubmit = async (event) => {
     try {
@@ -36,8 +39,8 @@ const Register = () => {
       const response = await register(user);
       dispatch(saveUser(response.payload));
       navigate(`/${PublicRoutes.HOME}`);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      saveError(err.message);
     }
   };
 
@@ -46,7 +49,8 @@ const Register = () => {
   };
 
   return (
-    <CoverContainer>
+    <CoverContainer $position='relative'>
+      {error && <ErrorAlertMessage error={error} closeError={closeError} errorLevel='error' />}
       <FlexContainer $direction='column' $width='600px' $maxwidth='600px'>
         <SubTitle $marginbottom='30px'>Sign in</SubTitle>
         <FormContainer $width='100%' onSubmit={handleSubmit}>

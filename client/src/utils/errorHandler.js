@@ -1,79 +1,75 @@
 import { ErrorNames } from "@/models/errorNames";
+import { ErrorMessages } from "@/models/errorMessages";
 
 export const errorHandler = (error) => {
   switch (error.name) {
     // GENERIC ERRORS
     case ErrorNames.INTERNAL_SERVER_ERROR:
-      error.message =
-        "Ha ocurrido un error interno en el servidor. Por favor, inténtalo de nuevo más tarde.";
+      error.message = ErrorMessages.INTERNAL_SERVER_ERROR;
       break;
     case ErrorNames.UNAUTHORIZED:
-      error.message = "No estás autorizado para acceder a esta página. Por favor, inicia sesión.";
+      error.message = ErrorMessages.UNAUTHORIZED;
       break;
     case ErrorNames.MISSING_PATHS:
-      error.message =
-        "Algunos campos requeridos están vacíos. Por favor, completa todos los campos.";
+      error.message = ErrorMessages.MISSING_PATHS;
       break;
     case ErrorNames.WRONG_ID_FORMAT:
-      error.message = "El formato del ID es incorrecto. Por favor, verifica el ID proporcionado.";
+      error.message = ErrorMessages.WRONG_ID_FORMAT;
       break;
     case ErrorNames.FORBIDDEN:
-      error.message = "No tienes permiso para realizar esta acción.";
+      error.message = ErrorMessages.FORBIDDEN;
       break;
     case ErrorNames.DUPLICATE_KEY:
-      error.message = "El elemento que intentas crear ya existe.";
+      error.message = ErrorMessages.DUPLICATE_KEY;
       break;
     case ErrorNames.NOT_FOUND:
-      error.message = "No se ha encontrado el recurso solicitado.";
+      error.message = ErrorMessages.NOT_FOUND;
       break;
 
     // PRODUCTS
     case ErrorNames.products.PRODUCT_NOT_FOUND:
-      error.message = "El producto solicitado no se ha encontrado.";
+      error.message = ErrorMessages.products.PRODUCT_NOT_FOUND;
       break;
 
     // CARTS
     case ErrorNames.carts.CART_NOT_FOUND:
-      error.message = "El carrito solicitado no se ha encontrado.";
+      error.message = ErrorMessages.carts.CART_NOT_FOUND;
       break;
     case ErrorNames.carts.MISSING_QUANTITY:
-      error.message = "La cantidad es obligatoria para esta acción en el carrito.";
+      error.message = ErrorMessages.carts.MISSING_QUANTITY;
       break;
     case ErrorNames.carts.MISSING_STOCK_TO_PURCHASE:
-      error.message = "No hay suficiente stock para completar la compra.";
+      error.message = ErrorMessages.carts.MISSING_STOCK_TO_PURCHASE;
       break;
 
     // USERS
     case ErrorNames.users.USER_NOT_FOUND:
-      error.message = "El usuario solicitado no se ha encontrado.";
+      error.message = ErrorMessages.users.USER_NOT_FOUND;
       break;
     case ErrorNames.users.DUPLICATE_EMAIL:
-      error.message = "El correo electrónico ya está en uso. Por favor, elige otro.";
+      error.message = ErrorMessages.users.DUPLICATE_EMAIL;
       break;
     case ErrorNames.users.DUPLICATE_PASSWORD:
-      error.message = "La contraseña ya esta en uso. Por favor, elige otra.";
+      error.message = ErrorMessages.users.DUPLICATE_PASSWORD;
       break;
     case ErrorNames.users.INVALID_EMAIL:
-      error.message =
-        "Invalid email address. Please make sure to enter a valid email address with '@' and '.'";
+      error.message = ErrorMessages.users.INVALID_EMAIL;
       break;
     case ErrorNames.users.INVALID_CREDENTIALS:
-      error.message =
-        "Invalid login credentials. Please double-check your username and password and try again.";
+      error.message = ErrorMessages.users.INVALID_CREDENTIALS;
       break;
 
     // TICKETS
     case ErrorNames.tickets.TICKET_NOT_FOUND:
-      error.message = "El ticket solicitado no se ha encontrado.";
+      error.message = ErrorMessages.tickets.TICKET_NOT_FOUND;
       break;
     case ErrorNames.tickets.DUPLICATE_TICKET_CODE:
-      error.message = "El código de ticket ya existe. Por favor, utiliza otro código.";
+      error.message = ErrorMessages.tickets.DUPLICATE_TICKET_CODE;
       break;
 
     // DEFAULT ERROR
     default:
-      console.log(error);
-      error.message = "Ha ocurrido un error. Por favor, inténtalo de nuevo.";
+      error.message = ErrorMessages.DEFAULT_ERROR;
   }
 
   return error;
