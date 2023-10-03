@@ -1,7 +1,6 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import session from "express-session";
 import passport from "passport";
 import swaggerUiExpress from "swagger-ui-express";
 import authRouter from "./auth/dependencies.js";
@@ -25,7 +24,6 @@ const appInit = () => {
 
   app.setMiddlewares([
     cors(config.cors),
-    session(config.session),
     express.json(),
     express.urlencoded({ extended: true }),
     passport.initialize(),
