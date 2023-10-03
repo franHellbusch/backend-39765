@@ -45,7 +45,7 @@ export class AuthController {
         text: "Click next link to restore your password",
         template: config.sendgrid.templates.restorePassword,
         templateData: {
-          restoreLink: `http://localhost:5173/restore-password?restoreToken=${restoreToken}`,
+          restoreLink: `${config.client.clientUrl}/restore-password?restoreToken=${restoreToken}`,
         },
       });
 
