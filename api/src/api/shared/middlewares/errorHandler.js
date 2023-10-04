@@ -2,7 +2,6 @@ import { HttpError } from "../helpers/HttpError.js";
 import { logger } from "../utils/index.js";
 
 export const errorHandler = (err, _req, res, _next) => {
-  console.log(err);
   const httpError = HttpError.createError(err);
 
   if (httpError.status >= 500) {
