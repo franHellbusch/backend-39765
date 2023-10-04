@@ -94,6 +94,7 @@ export class AuthController {
   };
 
   currentUser = async (req, res, _next) => {
+    console.log(req.user);
     res.sendSuccessWithPayload(200, req.user);
   };
 

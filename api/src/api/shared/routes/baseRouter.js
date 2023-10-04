@@ -71,7 +71,7 @@ export default class BaseRouter {
   }
 
   handlePolicies = (policies = []) => {
-    return (req, res, next) => {
+    return (req, _res, next) => {
       if (policies[0] === "PUBLIC") return next();
 
       const user = req.user;
